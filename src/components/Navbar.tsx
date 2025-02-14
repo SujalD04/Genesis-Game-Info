@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, GamepadIcon, LogOut } from 'lucide-react';
+import { Menu, X, ChevronDown, GamepadIcon, LogOut, Settings as SettingsIcon, Shield as ShieldIcon, FileText as FileTextIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
@@ -91,34 +91,37 @@ const Navbar = () => {
               <AnimatePresence>
                 {showProfileDropdown && (
                   <motion.div
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    className="absolute right-0 mt-2 w-48 bg-black/80 backdrop-blur-md rounded-md shadow-lg py-1"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  className="absolute right-0 mt-2 w-48 bg-black/80 backdrop-blur-md rounded-md shadow-lg py-1"
+                >
+                  <Link
+                    to="/settings"
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
                   >
-                    <Link
-                      to="/settings"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
-                    >
-                      Settings
-                    </Link>
-                    <Link
-                      to="/privacy"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
-                    >
-                      Privacy Policy
-                    </Link>
-                    <Link
-                      to="/terms"
-                      className="block px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
-                    >
-                      Terms & Conditions
-                    </Link>
-                    <button className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200">
-                      <LogOut className="inline h-4 w-4 mr-2" />
-                      Logout
-                    </button>
-                  </motion.div>
+                    <SettingsIcon className="inline h-4 w-4 mr-2" />
+                    Settings
+                  </Link>
+                  <Link
+                    to="/privacy"
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
+                  >
+                    <ShieldIcon className="inline h-4 w-4 mr-2" />
+                    Privacy Policy
+                  </Link>
+                  <Link
+                    to="/terms"
+                    className="block px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
+                  >
+                    <FileTextIcon className="inline h-4 w-4 mr-2" />
+                    Terms & Conditions
+                  </Link>
+                  <button className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200">
+                    <LogOut className="inline h-4 w-4 mr-2" />
+                    Logout
+                  </button>
+                </motion.div>                
                 )}
               </AnimatePresence>
             </div>
@@ -212,34 +215,37 @@ const Navbar = () => {
           <AnimatePresence>
             {showProfileDropdown && (
               <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="pl-8 mt-2 space-y-1"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="pl-8 mt-2 space-y-1"
+            >
+              <Link
+                to="/settings"
+                className="block text-gray-300 hover:text-blue-400 transition duration-200"
               >
-                <Link
-                  to="/settings"
-                  className="block text-gray-300 hover:text-blue-400 transition duration-200"
-                >
-                  Settings
-                </Link>
-                <Link
-                  to="/privacy"
-                  className="block text-gray-300 hover:text-blue-400 transition duration-200"
-                >
-                  Privacy Policy
-                </Link>
-                <Link
-                  to="/terms"
-                  className="block text-gray-300 hover:text-blue-400 transition duration-200"
-                >
-                  Terms & Conditions
-                </Link>
-                <button className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
-                  <LogOut className="inline h-4 w-4 mr-2" />
-                  Logout
-                </button>
-              </motion.div>
+                <SettingsIcon className="inline h-4 w-4 mr-2" />
+                Settings
+              </Link>
+              <Link
+                to="/privacy"
+                className="block text-gray-300 hover:text-blue-400 transition duration-200"
+              >
+                <ShieldIcon className="inline h-4 w-4 mr-2" />
+                Privacy Policy
+              </Link>
+              <Link
+                to="/terms"
+                className="block text-gray-300 hover:text-blue-400 transition duration-200"
+              >
+                <FileTextIcon className="inline h-4 w-4 mr-2" />
+                Terms & Conditions
+              </Link>
+              <button className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
+                <LogOut className="inline h-4 w-4 mr-2" />
+                Logout
+              </button>
+            </motion.div>            
             )}
           </AnimatePresence>
         </div>

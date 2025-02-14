@@ -10,6 +10,13 @@ module.exports = {
         darkBlue: '#0a192f', 
         blackish: '#0d0d0d', 
       },
+      blue: {
+        300: '#60A5FA',
+        400: '#3B82F6',
+        500: '#2563EB',
+        600: '#1D4ED8',
+        700: '#1E40AF',
+      },
       backgroundImage: {
         'dark-gradient': 'linear-gradient(135deg, #0a192f 0%, #0d0d0d 100%)',
       },
