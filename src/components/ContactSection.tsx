@@ -32,7 +32,7 @@ const ContactSection = () => {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold mb-4 text-white">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
             Contact{' '}
             <span className="bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
               Us
