@@ -5,6 +5,7 @@ const GamesAnimation = () => {
     '/valorant.png',
     '/league2.png',
     '/apex.png',
+    '/cod.png',
     '/fortnite.png',
     '/cs2.png',
     '/dota2.png',

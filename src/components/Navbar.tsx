@@ -23,37 +23,52 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-          <Link 
-            to="/" 
-            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
-              location.pathname === '/' ? 'border-blue-500' : 'border-transparent'
-            }`}
-          >
+          <Link
+            to="/"
+            className={`relative text-gray-300 hover:text-blue-400 transition duration-200 
+              after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+              after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+              hover:after:scale-x-100 hover:after:origin-left ${
+                location.pathname === '/' ? 'after:scale-x-100 after:origin-left' : ''
+              }`}
+            >
             Home
           </Link>
-          <Link 
-            to="/games" 
-            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
-              location.pathname === '/games' ? 'border-blue-500' : 'border-transparent'
-            }`}
-          >
-            Games
+
+          <Link
+              to="/games"
+              className={`relative text-gray-300 hover:text-blue-400 transition duration-200 
+                after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+                after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+                hover:after:scale-x-100 hover:after:origin-left ${
+                  location.pathname === '/games' ? 'after:scale-x-100 after:origin-left' : ''
+                }`}
+            >
+              Games
           </Link>
-          <Link 
-            to="/about" 
-            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
-              location.pathname === '/about' ? 'border-blue-500' : 'border-transparent'
-            }`}
+
+          <Link
+            to="/about"
+            className={`relative text-gray-300 hover:text-blue-400 transition duration-200 
+              after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+              after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+              hover:after:scale-x-100 hover:after:origin-left ${
+                location.pathname === '/about' ? 'after:scale-x-100 after:origin-left' : ''
+              }`}
           >
             About
           </Link>
-          <Link 
-            to="/contact" 
-            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
-              location.pathname === '/contact' ? 'border-blue-500' : 'border-transparent'
-            }`}
+          
+          <Link
+            to="/contact"
+            className={`relative text-gray-300 hover:text-blue-400 transition duration-200 
+              after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+              after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+              hover:after:scale-x-100 hover:after:origin-left ${
+                location.pathname === '/contact' ? 'after:scale-x-100 after:origin-left' : ''
+              }`}
           >
-            Contact Us
+            Contact
           </Link>
 
           </div>
@@ -122,7 +137,6 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {/* Mobile Menu */}
 <AnimatePresence>
   {isOpen && (
     <motion.div
@@ -132,35 +146,50 @@ const Navbar = () => {
       className="md:hidden bg-black/80 backdrop-blur-md"
     >
       <div className="px-2 pt-2 pb-3 space-y-1">
-        <Link
+      <Link
           to="/"
-          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
-            location.pathname === '/' ? 'border-l-4 border-blue-500' : ''
-          }`}
+          className={`block px-3 py-2 relative text-gray-300 hover:text-blue-400 transition duration-200 
+            after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+            after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+            hover:after:scale-x-100 hover:after:origin-left ${
+              location.pathname === '/' ? 'after:scale-x-100 after:origin-left' : ''
+            }`}
         >
           Home
         </Link>
+
         <Link
           to="/games"
-          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
-            location.pathname === '/games' ? 'border-l-4 border-blue-500' : ''
-          }`}
+          className={`block px-3 py-2 relative text-gray-300 hover:text-blue-400 transition duration-200 
+            after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+            after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+            hover:after:scale-x-100 hover:after:origin-left ${
+              location.pathname === '/games' ? 'after:scale-x-100 after:origin-left' : ''
+            }`}
         >
           Games
         </Link>
+
         <Link
           to="/about"
-          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
-            location.pathname === '/about' ? 'border-l-4 border-blue-500' : ''
-          }`}
+          className={`block px-3 py-2 relative text-gray-300 hover:text-blue-400 transition duration-200 
+            after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+            after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+            hover:after:scale-x-100 hover:after:origin-left ${
+              location.pathname === '/about' ? 'after:scale-x-100 after:origin-left' : ''
+            }`}
         >
           About
         </Link>
+
         <Link
           to="/contact"
-          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
-            location.pathname === '/contact' ? 'border-l-4 border-blue-500' : ''
-          }`}
+          className={`block px-3 py-2 relative text-gray-300 hover:text-blue-400 transition duration-200 
+            after:content-[''] after:absolute after:left-0 after:bottom-[-2px] after:w-full after:h-[2px] 
+            after:bg-blue-500 after:scale-x-0 after:origin-right after:transition-transform after:duration-300
+            hover:after:scale-x-100 hover:after:origin-left ${
+              location.pathname === '/contact' ? 'after:scale-x-100 after:origin-left' : ''
+            }`}
         >
           Contact Us
         </Link>
