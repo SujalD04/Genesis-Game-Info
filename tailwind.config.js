@@ -11,6 +11,10 @@ module.exports = {
       backgroundImage: {
         'dark-gradient': 'linear-gradient(135deg, #0a192f 0%, #0d0d0d 100%)',
       },
+      fontFamily: {
+        orbitron: ['Orbitron', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+      },
     },
   },
   plugins: [],

@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, GamepadIcon, LogOut } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const location = useLocation();
+
 
   return (
-    <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md shadow-md z-50">
+    <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md shadow-md z-50 font-orbitron text-xl font-bold">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -21,18 +23,39 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="text-gray-300 hover:text-blue-400 transition duration-200">
-              Home
-            </Link>
-            <Link to="/games" className="text-gray-300 hover:text-blue-400 transition duration-200">
-              Games
-            </Link>
-            <Link to="/about" className="text-gray-300 hover:text-blue-400 transition duration-200">
-              About
-            </Link>
-            <Link to="/contact" className="text-gray-300 hover:text-blue-400 transition duration-200">
-              Contact Us
-            </Link>
+          <Link 
+            to="/" 
+            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
+              location.pathname === '/' ? 'border-blue-500' : 'border-transparent'
+            }`}
+          >
+            Home
+          </Link>
+          <Link 
+            to="/games" 
+            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
+              location.pathname === '/games' ? 'border-blue-500' : 'border-transparent'
+            }`}
+          >
+            Games
+          </Link>
+          <Link 
+            to="/about" 
+            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
+              location.pathname === '/about' ? 'border-blue-500' : 'border-transparent'
+            }`}
+          >
+            About
+          </Link>
+          <Link 
+            to="/contact" 
+            className={`text-gray-300 hover:text-blue-400 transition duration-200 border-b-2 ${
+              location.pathname === '/contact' ? 'border-blue-500' : 'border-transparent'
+            }`}
+          >
+            Contact Us
+          </Link>
+
           </div>
 
           {/* Profile Section */}
@@ -99,43 +122,103 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-black/80 backdrop-blur-md"
+      {/* Mobile Menu */}
+<AnimatePresence>
+  {isOpen && (
+    <motion.div
+      initial={{ opacity: 0, height: 0 }}
+      animate={{ opacity: 1, height: 'auto' }}
+      exit={{ opacity: 0, height: 0 }}
+      className="md:hidden bg-black/80 backdrop-blur-md"
+    >
+      <div className="px-2 pt-2 pb-3 space-y-1">
+        <Link
+          to="/"
+          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
+            location.pathname === '/' ? 'border-l-4 border-blue-500' : ''
+          }`}
+        >
+          Home
+        </Link>
+        <Link
+          to="/games"
+          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
+            location.pathname === '/games' ? 'border-l-4 border-blue-500' : ''
+          }`}
+        >
+          Games
+        </Link>
+        <Link
+          to="/about"
+          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
+            location.pathname === '/about' ? 'border-l-4 border-blue-500' : ''
+          }`}
+        >
+          About
+        </Link>
+        <Link
+          to="/contact"
+          className={`block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200 ${
+            location.pathname === '/contact' ? 'border-l-4 border-blue-500' : ''
+          }`}
+        >
+          Contact Us
+        </Link>
+
+        {/* Profile Dropdown for Mobile */}
+        <div className="border-t border-gray-700 mt-2 pt-2">
+          <button
+            onClick={() => setShowProfileDropdown(!showProfileDropdown)}
+            className="flex items-center space-x-2 w-full text-gray-300 hover:text-blue-400 transition duration-200"
           >
-            <div className="px-2 pt-2 pb-3 space-y-1">
-              <Link
-                to="/"
-                className="block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200"
+            <img
+              src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&auto=format&fit=crop&q=60"
+              alt="Profile"
+              className="h-9 w-9 rounded-full border-2 border-blue-500"
+            />
+            <span>Profile</span>
+            <ChevronDown className="h-4 w-4" />
+          </button>
+
+          <AnimatePresence>
+            {showProfileDropdown && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="pl-8 mt-2 space-y-1"
               >
-                Home
-              </Link>
-              <Link
-                to="/games"
-                className="block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200"
-              >
-                Games
-              </Link>
-              <Link
-                to="/about"
-                className="block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200"
-              >
-                About
-              </Link>
-              <Link
-                to="/contact"
-                className="block px-3 py-2 text-gray-300 hover:text-blue-400 transition duration-200"
-              >
-                Contact Us
-              </Link>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                <Link
+                  to="/settings"
+                  className="block text-gray-300 hover:text-blue-400 transition duration-200"
+                >
+                  Settings
+                </Link>
+                <Link
+                  to="/privacy"
+                  className="block text-gray-300 hover:text-blue-400 transition duration-200"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  to="/terms"
+                  className="block text-gray-300 hover:text-blue-400 transition duration-200"
+                >
+                  Terms & Conditions
+                </Link>
+                <button className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
+                  <LogOut className="inline h-4 w-4 mr-2" />
+                  Logout
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </div>
+    </motion.div>
+  )}
+</AnimatePresence>
+
     </nav>
   );
 };
