@@ -6,19 +6,19 @@ const Services = () => {
       title: 'Game Analytics',
       description: 'Detailed statistics data for top games.',
       image:
-        'https://47billion.com/wp-content/uploads/2022/01/Gaming-Industry-%E2%80%93-Revolution-with-Analytics.png',
+        '/service1.webp',
     },
     {
       title: 'Player Insights',
       description: 'Track player performance and rankings.',
       image:
-        'https://cdn.pixabay.com/photo/2021/09/07/07/11/game-console-6603120_1280.jpg',
+        '/service2.webp',
     },
     {
       title: 'Real-Time Updates',
       description: 'Stay updated with live game stats.',
       image:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZVy0Mho6zBqtDhwGp5uZ7rP6-JuThQ90b5Q&s',
+        '/service3.webp',
     },
   ];
 
