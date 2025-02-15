@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { WavyBackground } from './ui/wavy-background';
-import Logo from '../logo.jpg'; // Import your logo image
+import Logo from '../logo.png'; // Import your logo image
 
 const SignUp = () => {
   return (
