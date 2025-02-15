@@ -3,12 +3,22 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, GamepadIcon, LogOut, Settings as SettingsIcon, Shield as ShieldIcon, FileText as FileTextIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from "../logo.png";
+import { useNavigate } from 'react-router-dom';
+
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const location = useLocation();
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
+  const navigate = useNavigate();
 
+
+  const handleLogout = () => {
+    localStorage.removeItem('authToken');
+    navigate('/signin');
+  };
+  
 
   return (
     <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md shadow-md z-50 font-orbitron text-xl font-bold">
@@ -118,10 +128,14 @@ const Navbar = () => {
                     <FileTextIcon className="inline h-4 w-4 mr-2" />
                     Terms & Conditions
                   </Link>
-                  <button className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200">
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-blue-500/20 hover:text-blue-400 transition duration-200"
+                  >
                     <LogOut className="inline h-4 w-4 mr-2" />
                     Logout
                   </button>
+
                 </motion.div>                
                 )}
               </AnimatePresence>
@@ -242,7 +256,9 @@ const Navbar = () => {
                 <FileTextIcon className="inline h-4 w-4 mr-2" />
                 Terms & Conditions
               </Link>
-              <button className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
+              <button
+              onClick={handleLogout} 
+              className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
                 <LogOut className="inline h-4 w-4 mr-2" />
                 Logout
               </button>

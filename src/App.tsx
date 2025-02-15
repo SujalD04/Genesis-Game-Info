@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -11,11 +11,22 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import ProtectedRoute from './components/protectedRoutes';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase'; // Make sure your firebase config is correctly imported
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const location = useLocation();
   const hideNavbarFooter = location.pathname === '/signin' || location.pathname === '/signup';
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsAuthenticated(!!user); // Sets true if user exists, false otherwise
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-900 text-white">
@@ -27,18 +38,44 @@ function App() {
           <Route
             path="/"
             element={
-              <>
-                <Hero />
-                <Services />
-                <Testimonials />
-                <GamesAnimation />
-              </>
+              <ProtectedRoute>
+                <>
+                  <Hero />
+                  <Services />
+                  <Testimonials />
+                  <GamesAnimation />
+                </>
+              </ProtectedRoute>
             }
           />
-          <Route path="/games" element={<GamesSection />} />
-          <Route path="/about" element={<AboutSection />} />
-          <Route path="/contact" element={<ContactSection />} />
-          <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+          <Route
+            path="/games"
+            element={
+              <ProtectedRoute>
+                <GamesSection />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <ProtectedRoute>
+                <AboutSection />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <ProtectedRoute>
+                <ContactSection />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/signin"
+            element={<SignIn setIsAuthenticated={setIsAuthenticated} />}
+          />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </main>
