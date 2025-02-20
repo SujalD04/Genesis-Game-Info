@@ -3,20 +3,20 @@ import React from 'react';
 const Services = () => {
   const services = [
     {
-      title: 'Game Analytics',
-      description: 'Detailed statistics data for top games.',
+      title: 'Game Overview & Details',
+      description: 'Get comprehensive information about popular games, including gameplay mechanics, storylines, platforms, system requirements, and developer info.',
       image:
         '/service1.webp',
     },
     {
-      title: 'Player Insights',
-      description: 'Track player performance and rankings.',
+      title: 'Latest Game Updates & News',
+      description: 'Stay up-to-date with the latest patches, updates, and announcements from game developers.',
       image:
         '/service2.webp',
     },
     {
       title: 'Real-Time Updates',
-      description: 'Stay updated with live game stats.',
+      description: 'Get live updates on the latest game announcements, news, and trending topics from the gaming world.',
       image:
         '/service3.webp',
     },
@@ -42,7 +42,7 @@ const Services = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="p-6 absolute bottom-0 left-0 w-full text-white z-10">
               <h3 className="text-2xl font-bold mb-2">{service.title}</h3>
-              <p className="text-gray-400">{service.description}</p>
+              <p className="text-white">{service.description}</p>
             </div>
           </div>
         ))}

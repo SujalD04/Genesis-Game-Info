@@ -50,15 +50,15 @@ const Hero = () => {
           >
             <h1 className="text-5xl md:text-7xl font-bold">
               <span className="bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
-                Level Up
+                Your one stop for
               </span>
               <br />
-              Your Gaming Analytics
+              Game Insights
             </h1>
 
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Track your progress, analyze your performance, and dominate the competition
-              with Genesis - your ultimate gaming companion.
+            Explore in-depth game details, discover key stats, and stay up to date with the latest game info on Genesis 
+            – your ultimate gaming resource.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

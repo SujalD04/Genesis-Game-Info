@@ -4,21 +4,21 @@ const Testimonials = () => {
   const testimonials = [
     {
       name: 'John Doe',
-      feedback: 'Amazing platform! It helped me track my stats easily.',
+      feedback: "Genesis has completely changed the way I stay updated with the games I love. The real-time updates on patch notes and live events keep me ahead of the curve. It's a must-have for any gamer!",
     },
     {
       name: 'Jane Smith',
-      feedback: 'A must-have tool for every gamer. Highly recommended!',
+      feedback: "Before Genesis, I used to jump between websites to get game news and updates. Now, I have everything I need in one place. The real-time news and updates are spot-on, and the design is fantastic!",
     },
     {
       name: 'Alex Johnson',
-      feedback: 'The best analytics website out there. Very user-friendly!',
+      feedback: "As a content creator, staying informed about new game releases, updates, and live events is crucial. Genesis provides the best insights, and I can rely on it for accurate and timely information.",
     },
   ];
 
   return (
     <section className="py-16 bg-black/95 backdrop-blur-md">
-      <h2 className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300 mb-12">
+      <h2 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300 mb-12">
         What Our Users Say
       </h2>
 
