@@ -1,8 +1,9 @@
 import express, { Request, Response } from "express";
 import mongoose, { Schema, Document } from "mongoose";
-import axios from "axios";
+import bcrypt from "bcryptjs"; // Added bcrypt for password hashing
 import dotenv from "dotenv";
 import cors from "cors";
+import axios from "axios";
 
 dotenv.config();
 
@@ -15,6 +16,58 @@ const REGION = "ap";
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// User Schema for MongoDB
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+});
+
+// User Model
+const User = mongoose.model('User', userSchema);
+
+// API Route to handle signup data
+app.post('/signup', async (req, res) => {
+  const { name, email, password } = req.body;
+
+  try {
+    // Hash the password before storing
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user in the database
+    const newUser = new User({ name, email, password: hashedPassword });
+    await newUser.save();
+    res.status(201).json({ message: 'User created successfully', user: newUser });
+  } catch (err) {
+    const error = err as Error;
+    res.status(500).json({ error: 'Error creating user', details: error.message });
+  }
+});
+
+// API Route to handle login data
+app.post('/signin', async (req: Request, res: Response) => {
+  const { email, password } = req.body;
+
+  try {
+    // Check if the user exists
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: "User does not exist" });
+    }
+
+    // Compare the password with the hashed password in the database
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: "Incorrect password" });
+    }
+
+    // If everything matches, respond with success
+    res.status(200).json({ message: "Login successful", user });
+  } catch (error) {
+    res.status(500).json({ error: (error as Error).message });
+  }
+});
 
 // Check if Riot API Key exists
 if (!RIOT_API_KEY) {
@@ -41,7 +94,7 @@ interface IValorantContent extends Document {
   acts: { id: string; name: string }[];
 }
 
-// Define Mongoose Schema
+// Define Mongoose Schema for Valorant content
 const valorantSchema = new Schema<IValorantContent>(
   {
     version: String,
