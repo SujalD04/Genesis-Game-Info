@@ -161,7 +161,7 @@ We welcome contributions to make Genesis better! To contribute:
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+You may not modify, distribute, or sell this software. You are permitted to use it for personal purposes only. The software is provided "as-is" without warranty.
 
 ## Contact
 
