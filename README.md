@@ -170,5 +170,3 @@ You may not modify, distribute, or sell this software. You are permitted to use 
 - **Twitter**: [@yourusername](https://twitter.com/yourusername)
 
 ---
-
-This is a detailed and structured README for Genesis, covering everything from setup, features, and contributions, to deployment and contact information. Feel free to adjust it according to your project's specific needs.
