@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import GameCard from './GameCard';
 import { games } from '../data/games';
+import valorant from '../pages/valorant';
 
 const GamesSection = () => {
   const [searchTerm, setSearchTerm] = useState('');

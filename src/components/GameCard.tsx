@@ -1,16 +1,24 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Game } from '../types';
+import { useNavigate } from 'react-router-dom';
 
 interface GameCardProps {
   game: Game;
 }
 
 const GameCard = ({ game }: GameCardProps) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(`/${game.name.toLowerCase().replace(/\s+/g, '-')}`);
+  };
+
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="relative group bg-blue-800/30 rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105"
+      className="relative group bg-blue-800/30 rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-105 cursor-pointer"
+      onClick={handleClick}
     >
       <div className="aspect-video relative overflow-hidden">
         <img
