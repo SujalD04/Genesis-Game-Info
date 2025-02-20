@@ -1,19 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Search } from 'lucide-react';
 import GameCard from './GameCard';
-import { games } from '../data/games';
+import { games } from '../data/games'; // This should be an API call
 import valorant from '../pages/valorant';
 
 const GamesSection = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true); // Track loading state
+  const [filteredGames, setFilteredGames] = useState(games); // Change to use fetched games
+
+  useEffect(() => {
+    // Simulate an API call
+    setTimeout(() => {
+      setFilteredGames(games); // Set games data (replace with actual API call)
+      setLoading(false); // Set loading to false after fetching
+    }, 2000); // Simulate delay for loading
+  }, []);
 
   const allGenres = Array.from(
     new Set(games.flatMap((game) => game.genre))
   ).sort();
 
-  const filteredGames = games.filter((game) => {
+  const filteredGamesList = filteredGames.filter((game) => {
     const matchesSearch = game.name
       .toLowerCase()
       .includes(searchTerm.toLowerCase());
@@ -24,6 +34,7 @@ const GamesSection = () => {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black font-roboto">
       <div className="max-w-7xl mx-auto">
+        {/* Title Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -43,8 +54,8 @@ const GamesSection = () => {
           </p>
         </motion.div>
 
+        {/* Search Input */}
         <div className="mb-8 space-y-4 sm:space-y-0 sm:flex sm:items-center sm:justify-between">
-          {/* Search Input */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
@@ -96,18 +107,30 @@ const GamesSection = () => {
           </motion.div>
         </div>
 
-        {/* Games Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-          {filteredGames.map((game) => (
-            <GameCard key={game.id} game={game} />
-          ))}
-        </motion.div>
+        {/* Loading Screen */}
+        {loading ? (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            className="flex justify-center items-center h-64"
+          >
+            <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500 border-solid"></div>
+          </motion.div>
+        ) : (
+          // Games Grid
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            viewport={{ once: true }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {filteredGamesList.map((game) => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </motion.div>
+        )}
       </div>
     </section>
   );
