@@ -6,6 +6,7 @@ import logo from "../logo.png";
 import { useNavigate } from 'react-router-dom';
 
 
+
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
@@ -15,10 +16,13 @@ const Navbar = () => {
 
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
-    navigate('/signin');
-  };
+    // Clear all session data from localStorage
+    localStorage.removeItem('authToken');  // If you store any auth tokens
+    sessionStorage.clear();  // If you're storing any session-specific data
   
+    // Redirect to the Sign In page
+    navigate('/signin', { replace: true });
+  };
 
   return (
     <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md shadow-md z-50 font-orbitron text-xl font-bold">
@@ -257,8 +261,8 @@ const Navbar = () => {
                 Terms & Conditions
               </Link>
               <button
-              onClick={handleLogout} 
-              className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
+                onClick={handleLogout} 
+                className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
                 <LogOut className="inline h-4 w-4 mr-2" />
                 Logout
               </button>

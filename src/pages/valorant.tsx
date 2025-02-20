@@ -76,12 +76,20 @@ const Valorant: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-black text-white p-8 mt-16 flex flex-col items-center justify-center">
-        <div className="loader">Loading...</div>
-        {/* Add your own loading spinner or message here */}
+      <div className="min-h-screen bg-black text-white p-8 mt-16 flex flex-col items-center justify-center relative">
+        {/* Loading Spinner */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="flex justify-center items-center absolute inset-0 z-10 top-0 bottom-0"
+        >
+          <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500 border-solid"></div>
+        </motion.div>
       </div>
     );
   }
+  
 
   return (
     <div className="min-h-screen bg-black text-white p-8 mt-16 flex flex-col items-center">

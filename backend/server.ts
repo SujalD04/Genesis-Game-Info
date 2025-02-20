@@ -14,7 +14,12 @@ const RIOT_API_KEY = process.env.RIOT_API_KEY;
 const REGION = "ap";
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Replace with your frontend URL if it's different
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}));
+
 app.use(express.json());
 
 // User Schema for MongoDB
@@ -56,7 +61,7 @@ app.post('/signin', async (req: Request, res: Response) => {
       return res.status(404).json({ error: "User does not exist" });
     }
 
-    // Compare the password with the hashed password in the database
+    // Compare the entered password with the hashed password in the database
     const isPasswordMatch = await bcrypt.compare(password, user.password);
     if (!isPasswordMatch) {
       return res.status(401).json({ error: "Incorrect password" });
@@ -68,6 +73,7 @@ app.post('/signin', async (req: Request, res: Response) => {
     res.status(500).json({ error: (error as Error).message });
   }
 });
+
 
 // Check if Riot API Key exists
 if (!RIOT_API_KEY) {

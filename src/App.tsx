@@ -11,7 +11,6 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import ProtectedRoute from './components/ProtectedRoutes';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
 
@@ -60,37 +59,27 @@ function App() {
 
           <main className="flex-grow">
             <Routes>
-              {/* Protected Main Sections */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute>
-                    <Hero />
-                    <Services />
-                    <Testimonials />
-                    <GamesAnimation />
-                  </ProtectedRoute>
-                }
-              />
-              <Route path="/games" element={<ProtectedRoute><GamesSection /></ProtectedRoute>} />
-              <Route path="/about" element={<ProtectedRoute><AboutSection /></ProtectedRoute>} />
-              <Route path="/contact" element={<ProtectedRoute><ContactSection /></ProtectedRoute>} />
+              {/* Main Sections */}
+              <Route path="/" element={<><Hero /><Services /><Testimonials /><GamesAnimation /></>} />
+              <Route path="/games" element={<GamesSection />} />
+              <Route path="/about" element={<AboutSection />} />
+              <Route path="/contact" element={<ContactSection />} />
 
               {/* Auth Routes */}
               <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/signup" element={<SignUp />} />
 
               {/* Game-Specific Routes */}
-              <Route path="/valorant" element={<ProtectedRoute><Valorant /></ProtectedRoute>} />
-              <Route path="/apex" element={<ProtectedRoute><Apex /></ProtectedRoute>} />
-              <Route path="/cod" element={<ProtectedRoute><Cod /></ProtectedRoute>} />
-              <Route path="/cs2" element={<ProtectedRoute><Cs2 /></ProtectedRoute>} />
-              <Route path="/d2" element={<ProtectedRoute><D2 /></ProtectedRoute>} />
-              <Route path="/dota2" element={<ProtectedRoute><Dota2 /></ProtectedRoute>} />
-              <Route path="/fortnite" element={<ProtectedRoute><Fortnite /></ProtectedRoute>} />
-              <Route path="/lol" element={<ProtectedRoute><Lol /></ProtectedRoute>} />
-              <Route path="/pubg" element={<ProtectedRoute><Pubg /></ProtectedRoute>} />
-              <Route path="/rl" element={<ProtectedRoute><Rl /></ProtectedRoute>} />
+              <Route path="/valorant" element={<Valorant />} />
+              <Route path="/apex" element={<Apex />} />
+              <Route path="/cod" element={<Cod />} />
+              <Route path="/cs2" element={<Cs2 />} />
+              <Route path="/d2" element={<D2 />} />
+              <Route path="/dota2" element={<Dota2 />} />
+              <Route path="/fortnite" element={<Fortnite />} />
+              <Route path="/lol" element={<Lol />} />
+              <Route path="/pubg" element={<Pubg />} />
+              <Route path="/rl" element={<Rl />} />
             </Routes>
           </main>
 
