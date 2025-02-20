@@ -19,7 +19,7 @@ const teamMembers: TeamMember[] = [
     name: 'Sujal',
     role: 'Lead Developer',
     image:
-      'https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&auto=format&fit=crop&q=60',
+      '/dev1.jpeg',
     bio: 'Gaming enthusiast and full-stack developer with a passion for creating immersive digital experiences.',
     social: {
       github: 'https://github.com',
@@ -68,7 +68,7 @@ const AboutSection = () => {
                       alt={member.name}
                       className="w-full h-full rounded-full object-cover border-4 border-blue-500 shadow-lg"
                     />
-                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-300 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-blue-300 opacity-0 transition-opacity duration-300" />
                   </div>
                   <h3 className="text-2xl font-bold text-blue-300 mb-2 text-center">
                     {member.name}
