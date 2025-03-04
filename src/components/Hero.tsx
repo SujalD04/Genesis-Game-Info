@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { Link } from 'react-scroll'
 
 const Hero = () => {
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Simulate content loading with a timeout
@@ -66,11 +69,18 @@ const Hero = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 bg-blue-500 text-white rounded-full font-semibold flex items-center space-x-2 hover:bg-blue-600 transition-colors"
+                onClick={() => navigate('/games')}
               >
                 <span>Get Started</span>
                 <ArrowRight className="h-5 w-5" />
               </motion.button>
 
+            <Link
+            to="services-section"
+            smooth={true}
+            duration={100}
+            className='inline-block'
+            >
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -78,6 +88,7 @@ const Hero = () => {
               >
                 Learn More
               </motion.button>
+            </Link> 
             </div>
           </motion.div>
         </div>
