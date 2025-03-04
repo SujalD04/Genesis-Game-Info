@@ -21,7 +21,8 @@ const GamesAnimation = () => {
       </h2>
 
       <div className="relative overflow-hidden w-full">
-        <div className="flex w-[200%] space-x-10 animate-scroll">
+        <div className="flex w-full space-x-10 animate-scroll">
+          {/* Duplicate the array to ensure continuous scrolling */}
           {gameLogos.concat(gameLogos).map((logo, index) => (
             <div
               key={index}
@@ -36,6 +37,21 @@ const GamesAnimation = () => {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .animate-scroll {
+          animation: scroll 30s linear infinite;
+        }
+      `}</style>
     </section>
   );
 };

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -11,8 +12,7 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from './firebase';
+import PageNotFound from './components/NotFound'
 
 import Valorant from './pages/valorant';
 import Apex from './pages/apex';
@@ -24,24 +24,42 @@ import Fortnite from './pages/fortnite';
 import Lol from './pages/lol';
 import Pubg from './pages/pubg';
 import Rl from './pages/rl';
+import ProtectedRoute from './components/ProtectedRoute'; 
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);  // New loading state
+  const [loading, setLoading] = useState(true);  
   const location = useLocation();
-  const hideNavbarFooter = location.pathname === '/signin' || location.pathname === '/signup';
+  const [isInvalidRoute, setIsInvalidRoute] = useState(false);
+
+  // Define valid routes (you can extend this as needed)
+  const validRoutes = ['/signin', '/signup', '/', '/games', '/about', '/contact'];
+
+  // Check for invalid route on every pathname change
+  useEffect(() => {
+    if (location.pathname === '*' || !validRoutes.includes(location.pathname)) {
+      setIsInvalidRoute(true);
+    } else {
+      setIsInvalidRoute(false);
+    }
+  }, [location.pathname]);
+
+  const hideNavbarFooter = isInvalidRoute || location.pathname === '/signin' || location.pathname === '/signup';
+
+  // Dummy authentication check - Replace with actual logic
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+    setLoading(false);  
+  }, []);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setIsAuthenticated(!!user);
-      setLoading(false);  // Set loading to false once auth state is checked
-    });
-
-    // Simulate other loading or API fetching processes if needed
-    setTimeout(() => setLoading(false), 3000);  // Simulate some loading delay (e.g., fetching data)
-
-    return () => unsubscribe();
-  }, []);
+    console.log('IsAuthenticated:', isAuthenticated); // Logs to console when isAuthenticated changes
+  }, [isAuthenticated]);
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
@@ -59,27 +77,127 @@ function App() {
 
           <main className="flex-grow">
             <Routes>
+              {/* Page Not Found */}
+              <Route 
+                path="*" 
+                element={<PageNotFound />} 
+              />
+
               {/* Main Sections */}
-              <Route path="/" element={<><Hero /><Services /><Testimonials /><GamesAnimation /></>} />
-              <Route path="/games" element={<GamesSection />} />
-              <Route path="/about" element={<AboutSection />} />
-              <Route path="/contact" element={<ContactSection />} />
+              <Route 
+                path="/" 
+                element={isAuthenticated ? (
+                  <>
+                    <Hero />
+                    <Services />
+                    <Testimonials />
+                    <GamesAnimation />
+                  </>
+                ) : (
+                  <Navigate to="/signin" replace />
+                )}
+              />
+
+              <Route 
+                path="/games" 
+                element={isAuthenticated ? <GamesSection /> : <Navigate to="/signin" replace />} 
+              />
+
+              <Route 
+                path="/about" 
+                element={isAuthenticated ? <AboutSection /> : <Navigate to="/signin" replace />} 
+              />
+
+              <Route 
+                path="/contact" 
+                element={isAuthenticated ? <ContactSection /> : <Navigate to="/signin" replace />} 
+              />
 
               {/* Auth Routes */}
               <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
-              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
 
-              {/* Game-Specific Routes */}
-              <Route path="/valorant" element={<Valorant />} />
-              <Route path="/apex" element={<Apex />} />
-              <Route path="/cod" element={<Cod />} />
-              <Route path="/cs2" element={<Cs2 />} />
-              <Route path="/d2" element={<D2 />} />
-              <Route path="/dota2" element={<Dota2 />} />
-              <Route path="/fortnite" element={<Fortnite />} />
-              <Route path="/lol" element={<Lol />} />
-              <Route path="/pubg" element={<Pubg />} />
-              <Route path="/rl" element={<Rl />} />
+              {/* Game-Specific Routes - Protected */}
+              <Route 
+                path="/valorant" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Valorant />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/apex" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Apex />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/cod" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Cod />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/cs2" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Cs2 />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/d2" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <D2 />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/dota2" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Dota2 />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/fortnite" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Fortnite />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/lol" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Lol />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/pubg" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Pubg />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/rl" 
+                element={
+                  <ProtectedRoute isAuthenticated={isAuthenticated}>
+                    <Rl />
+                  </ProtectedRoute>
+                } 
+              />
             </Routes>
           </main>
 

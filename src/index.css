@@ -67,3 +67,18 @@ h1, h2, h3, h4, h5, h6 {
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
+
+/* Add this in your global CSS file or within the Tailwind configuration */
+@layer utilities {
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 2s forwards;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+}
+

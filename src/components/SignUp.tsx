@@ -7,7 +7,7 @@ import axios from 'axios';
 
 const SignUp = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
-    name: '',
+    username: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -24,26 +24,31 @@ const SignUp = ({ setIsAuthenticated }) => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
-    // Validate password match
+    // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
     }
 
     try {
-      const response = await axios.post('http://localhost:5000/signup', {
-        name: formData.name,
+      // Send sign-up request to backend
+      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+        username: formData.username,  
         email: formData.email,
         password: formData.password,
       });
 
+      // Check for token in the response and set authentication
       if (response.status === 200) {
         setIsAuthenticated(true);
+        localStorage.setItem('token', response.data.token); // Store token in local storage
         navigate('/'); // Redirect to homepage after successful signup
+      } else {
+        setError('Error signing up');
       }
     } catch (error) {
-      console.error(error);
-      setError(error.response?.data?.error || 'Error signing up');
+      console.error('Sign-up error:', error.response || error);
+      setError(error.response?.data?.msg || 'Error signing up');
     }
   };
 
@@ -60,12 +65,12 @@ const SignUp = ({ setIsAuthenticated }) => {
           <h2 className="text-4xl font-semibold text-white mb-6 text-center">Sign Up</h2>
           <form className="space-y-6" onSubmit={handleSignUp}>
             <div>
-              <label className="block text-lg text-white mb-2">Name</label>
+              <label className="block text-lg text-white mb-2">Username</label>
               <input
                 type="text"
-                name="name"
-                placeholder="Enter your name"
-                value={formData.name}
+                name="username"
+                placeholder="Enter your username"
+                value={formData.username}
                 onChange={handleChange}
                 className="w-full p-4 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-md"
                 required

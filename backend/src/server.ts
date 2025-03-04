@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db";
+import authRoutes from "./routes/authRoutes";
+import valorantRoutes from "./routes/valorantRoutes";
 
 dotenv.config();
 const app = express();
@@ -15,14 +17,9 @@ app.use(express.json());
 connectDB().then(() => {
   console.log("✅ MongoDB connected, starting server...");
 
-  // Import routes **after** database connection is established
-  import("./routes/authRoutes").then(({ default: authRoutes }) => {
-    app.use("/api/auth", authRoutes);
-  });
+  app.use('/api/auth', authRoutes);
 
-  import("./routes/valorantRoutes").then(({ default: valorantRoutes }) => {
-    app.use("/api/valorant", valorantRoutes);
-  });
+  app.use("/api/valorant", valorantRoutes);
 
   app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
 }).catch((err) => {
