@@ -12,7 +12,10 @@ import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
-import PageNotFound from './components/NotFound'
+import PageNotFound from './components/NotFound';
+import Settings from './components/settings';
+import PrivacyPolicy from './components/Privacy';
+import TermsAndConditions from './components/Terms';
 
 import Valorant from './pages/valorant';
 import Apex from './pages/apex';
@@ -112,6 +115,22 @@ function App() {
                 path="/contact" 
                 element={isAuthenticated ? <ContactSection /> : <Navigate to="/signin" replace />} 
               />
+
+              <Route
+                path="/settings"
+                element = {isAuthenticated ? <Settings /> : <Navigate to="/signin" replace />}
+              />  
+
+              <Route
+                path="/privacy"
+                element = {isAuthenticated ? <PrivacyPolicy /> : <Navigate to="/signin" replace />}
+              />
+
+              <Route
+                path="/terms"
+                element = {isAuthenticated ? <TermsAndConditions /> : <Navigate to="/signin" replace />}
+              />
+
 
               {/* Auth Routes */}
               <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
