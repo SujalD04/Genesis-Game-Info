@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
 const BASE_URL = "http://localhost:5000";
@@ -19,6 +19,24 @@ const Valorant = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
+  const cardRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (cardRef.current && !cardRef.current.contains(event.target as Node)) {
+        setSelectedItem(null);
+      }
+    };
+
+    if (selectedItem) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [selectedItem]); // Fix: use `selectedItem`, not `isCardVisible`
 
   useEffect(() => {
     setIsLoading(true);
@@ -108,6 +126,7 @@ const Valorant = () => {
             </div>
           ) : null}
 
+          {/* Modal */}
           {selectedItem && (
             <motion.div
               className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50"
@@ -115,7 +134,7 @@ const Valorant = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="bg-blue-950 p-8 rounded-lg shadow-xl">
+              <div ref={cardRef} className="bg-blue-950 p-8 rounded-lg shadow-xl">
                 <div className="flex flex-col items-center">
                   <h2 className="text-4xl font-semibold bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
                     {selectedItem.name}
