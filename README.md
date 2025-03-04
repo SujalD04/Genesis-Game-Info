@@ -128,11 +128,11 @@ Make sure you have the following installed on your system:
 6. **Run the frontend**:
    ```bash
    cd frontend
-   npm start
+   npm run dev
    ```
-   This will start the frontend server on `http://localhost:3000`.
+   This will start the frontend server on `http://localhost:5173`.
 
-Now, you can navigate to `http://localhost:3000` to see the application running locally.
+Now, you can navigate to `http://localhost:5173` to see the application running locally.
 
 ## Usage
 
