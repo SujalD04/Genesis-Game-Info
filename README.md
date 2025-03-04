@@ -27,6 +27,12 @@ Genesis is designed to be a reliable platform for gamers who want to learn more 
 
 The goal of Genesis is to offer accurate, up-to-date information to help users stay connected with the gaming world without diving into player statistics.
 
+### **Website**
+![Homepage](Screenshots/home.png)
+![GameServices](Screenshots/Home2.png)
+![Valorant](Screenshots/valorant.png)
+
+
 ## Features
 
 - **Game Information**: A well-organized database of games, showcasing important details such as release dates, genres, and game mechanics.
