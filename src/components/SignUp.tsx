@@ -46,7 +46,8 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
           username: formData.username,
           email: formData.email,
           password: formData.password,
-        }
+        },
+        { withCredentials: true },
       );
       
 
