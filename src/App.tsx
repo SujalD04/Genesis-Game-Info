@@ -28,9 +28,8 @@ import Fortnite from './pages/fortnite';
 import Lol from './pages/lol';
 import Pubg from './pages/pubg';
 import Rl from './pages/rl';
-import ProtectedRoute from './components/ProtectedRoute'; 
 
-function App() {
+const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);  
   const location = useLocation();

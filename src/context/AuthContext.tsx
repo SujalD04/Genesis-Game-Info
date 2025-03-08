@@ -12,7 +12,11 @@ export const AuthContext = createContext<AuthContextProps>({
   setToken: () => {},
 });
 
-export const AuthProvider: React.FC = ({ children }) => {
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(localStorage.getItem('token'));
 
   useEffect(() => {

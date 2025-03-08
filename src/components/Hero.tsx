@@ -1,35 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { Link } from 'react-scroll'
+import { useNavigate } from 'react-router-dom';
 
 const Hero = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate content loading with a timeout
     setTimeout(() => {
       setLoading(false);
-    }, 2000); // Adjust the time as needed
+    }, 2000);
   }, []);
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Loading Animation */}
       {loading && (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="flex justify-center items-center absolute inset-0 z-10 top-0 bottom-0"
+          className="flex justify-center items-center absolute inset-0 z-10"
         >
           <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500 border-solid"></div>
         </motion.div>
       )}
 
-      {/* Background Image with Parallax Effect */}
       <div
         className="absolute inset-0 z-0"
         style={{
@@ -42,7 +38,6 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       </div>
 
-      {/* Content */}
       {!loading && (
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
@@ -60,11 +55,12 @@ const Hero = () => {
             </h1>
 
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Explore in-depth game details, discover key stats, and stay up to date with the latest game info on Genesis 
-            – your ultimate gaming resource.
+              Explore in-depth game details, discover key stats, and stay up to date with the latest game info on Genesis 
+              – your ultimate gaming resource.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              {/* Navigation Button */}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -75,20 +71,20 @@ const Hero = () => {
                 <ArrowRight className="h-5 w-5" />
               </motion.button>
 
-            <Link
-            to="services-section"
-            smooth={true}
-            duration={100}
-            className='inline-block'
-            >
+              {/* Smooth Scroll Button (No ScrollLink) */}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="px-8 py-3 border border-blue-500 text-blue-500 rounded-full font-semibold hover:bg-blue-500/10 transition-colors"
+                onClick={() => {
+                  document.getElementById('services-section')?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start',
+                  });
+                }}
               >
                 Learn More
               </motion.button>
-            </Link> 
             </div>
           </motion.div>
         </div>

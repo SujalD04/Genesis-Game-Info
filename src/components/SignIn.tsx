@@ -6,7 +6,11 @@ import Logo from '../logo.png';
 import axios from 'axios';
 import { Eye, EyeOff } from 'lucide-react';
 
-const SignIn = ({ setIsAuthenticated }) => {
+interface SignInProps {
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+}
+
+const SignIn: React.FC<SignInProps> = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -15,22 +19,29 @@ const SignIn = ({ setIsAuthenticated }) => {
 
 
   // Email/Password Sign In
-  const handleSignIn = async (e) => {
+  interface SignInResponse {
+    status: number;
+    data: {
+      msg?: string;
+    };
+  }
+
+  const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
+      const response: SignInResponse = await axios.post(
         "http://localhost:5000/api/auth/signin",
         { email, password },
         { withCredentials: true } // ✅ Enables sending/receiving cookies
       );
-  
+
       if (response.status === 200) {
-        setIsAuthenticated(true);  
-        navigate("/");  
+        setIsAuthenticated(true);
+        navigate("/");
       }
     } catch (error) {
       console.error(error);
-      setError(error.response?.data?.msg || "Error signing in");
+      setError((error as any).response?.data?.msg || "Error signing in");
     }
   };
   

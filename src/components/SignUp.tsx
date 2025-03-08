@@ -6,7 +6,11 @@ import Logo from '../logo.png';
 import axios from 'axios';
 import { Eye, EyeOff } from "lucide-react";
 
-const SignUp = ({ setIsAuthenticated }) => {
+interface SignUpProps {
+  setIsAuthenticated: (isAuthenticated: boolean) => void;
+}
+
+const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -18,12 +22,12 @@ const SignUp = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
 
   // Handle Input Change
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value });
   };
 
   // Handle Sign-Up
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Validate passwords match
@@ -47,8 +51,13 @@ const SignUp = ({ setIsAuthenticated }) => {
         setError('Error signing up');
       }
     } catch (error) {
-      console.error("Sign-up error:", error.response?.data || error);
-      setError(error.response?.data?.errors?.[0]?.msg || "Error signing up");
+      if (axios.isAxiosError(error)) {
+        console.error("Sign-up error:", error.response?.data || error);
+        setError(error.response?.data?.errors?.[0]?.msg || "Error signing up");
+      } else {
+        console.error("Sign-up error:", error);
+        setError("Error signing up");
+      }
     }    
   };
 

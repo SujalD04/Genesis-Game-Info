@@ -15,9 +15,9 @@ const categories = [
 
 const Valorant = () => {
   const [content, setContent] = useState(null);
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<ContentItem | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -53,13 +53,34 @@ const Valorant = () => {
       });
   }, []);
 
-  const handleCategoryClick = (category) => {
+  interface Category {
+    title: string;
+    key: string;
+  }
+
+  interface ContentItem {
+    id?: string;
+    name: string;
+    portrait?: string;
+    image?: string;
+    displayIcon?: string;
+  }
+
+  const handleCategoryClick = (category: string) => {
     setActiveCategory(activeCategory === category ? null : category);
     setSearchTerm("");
     setSelectedItem(null);
   };
 
-  const handleItemClick = (item) => {
+  interface ContentItem {
+    id?: string;
+    name: string;
+    portrait?: string;
+    image?: string;
+    displayIcon?: string;
+  }
+
+  const handleItemClick = (item: ContentItem) => {
     setSelectedItem(item);
   };
 
@@ -102,25 +123,25 @@ const Valorant = () => {
               />
 
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                {content[activeCategory]
-                  .filter((item) =>
-                    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+                {(content[activeCategory] as ContentItem[])
+                  .filter((item: ContentItem) =>
+                  item.name.toLowerCase().includes(searchTerm.toLowerCase())
                   )
-                  .map((item, index) => (
-                    <div
-                      key={item.id || index}
-                      className="p-6 bg-blue-600/20 text-center rounded-lg shadow-xl hover:bg-blue-900 transition-all cursor-pointer transform hover:scale-105"
-                      onClick={() => handleItemClick(item)}
-                    >
-                      {item.portrait || item.image || item.displayIcon ? (
-                        <img
-                          src={item.portrait || item.image || item.displayIcon}
-                          alt={item.name}
-                          className="w-full h-32 object-cover rounded-lg mb-4"
-                        />
-                      ) : null}
-                      <p className="text-lg font-semibold">{item.name}</p>
-                    </div>
+                  .map((item: ContentItem, index: number) => (
+                  <div
+                    key={item.id || index}
+                    className="p-6 bg-blue-600/20 text-center rounded-lg shadow-xl hover:bg-blue-900 transition-all cursor-pointer transform hover:scale-105"
+                    onClick={() => handleItemClick(item)}
+                  >
+                    {item.portrait || item.image || item.displayIcon ? (
+                    <img
+                      src={item.portrait || item.image || item.displayIcon}
+                      alt={item.name}
+                      className="w-full h-32 object-cover rounded-lg mb-4"
+                    />
+                    ) : null}
+                    <p className="text-lg font-semibold">{item.name}</p>
+                  </div>
                   ))}
               </div>
             </div>
