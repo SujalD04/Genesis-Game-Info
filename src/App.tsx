@@ -31,7 +31,7 @@ import Pubg from './pages/pubg';
 import Rl from './pages/rl';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [loading, setLoading] = useState(true);  
   const location = useLocation();
   const [isInvalidRoute, setIsInvalidRoute] = useState(false);
