@@ -4,12 +4,15 @@ import { motion } from 'framer-motion';
 import { WavyBackground } from './ui/wavy-background';
 import Logo from '../logo.png';
 import axios from 'axios';
+import { Eye, EyeOff } from 'lucide-react';
 
 const SignIn = ({ setIsAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false); 
+
 
   // Email/Password Sign In
   const handleSignIn = async (e) => {
@@ -54,16 +57,23 @@ const SignIn = ({ setIsAuthenticated }) => {
                 required
               />
             </div>
-            <div>
+            <div className="relative">
               <label className="block text-lg text-white mb-2">Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 className="w-full p-4 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-md"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+               type="button"
+               onClick={() => setShowPassword(!showPassword)}
+               className="absolute right-4 top-14 text-gray-500 hover:text-gray-300"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20}/>}
+              </button>
             </div>
             {error && (
               <p className="text-red-500 text-center">{error}</p>

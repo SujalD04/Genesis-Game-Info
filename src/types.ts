@@ -4,6 +4,7 @@ export interface Game {
   description: string;
   image: string;
   genre: string[];
+  link: string;
 }
 
 export interface User {

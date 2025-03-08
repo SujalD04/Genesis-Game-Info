@@ -13,14 +13,14 @@ interface AuthenticatedRequest extends Request {
 }
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@!#$%^&*])[A-Za-z\d@!#$%^&*]{8,}$/;
 
 // Signup Route
 router.post(
   "/signup",
   [
     body("email").matches(emailRegex).isEmail().withMessage("Invalid email"),
-    body("password").matches(passwordRegex).withMessage("Password must be at least 8 characters, include a letter and a number"),
+    body("password").matches(passwordRegex).withMessage("Password must be at least 8 characters, include a letter, a number and a special character."),
     body("username").notEmpty().withMessage("Username is required"),
   ],
   async (req: Request, res: Response) => {

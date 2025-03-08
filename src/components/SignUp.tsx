@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { WavyBackground } from './ui/wavy-background';
 import Logo from '../logo.png';
 import axios from 'axios';
+import { Eye, EyeOff } from "lucide-react";
 
 const SignUp = ({ setIsAuthenticated }) => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const SignUp = ({ setIsAuthenticated }) => {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Moved outside
   const navigate = useNavigate();
 
   // Handle Input Change
@@ -38,18 +40,16 @@ const SignUp = ({ setIsAuthenticated }) => {
         password: formData.password,
       });
 
-      // Check for token in the response and set authentication
       if (response.status === 200) {
-        setIsAuthenticated(true);
-        localStorage.setItem('authToken', response.data.token); // Store token in local storage
-        navigate('/'); // Redirect to homepage after successful signup
+        setIsAuthenticated(true); 
+        navigate('/'); 
       } else {
         setError('Error signing up');
       }
     } catch (error) {
-      console.error('Sign-up error:', error.response || error);
-      setError(error.response?.data?.msg || 'Error signing up');
-    }
+      console.error("Sign-up error:", error.response?.data || error);
+      setError(error.response?.data?.errors?.[0]?.msg || "Error signing up");
+    }    
   };
 
   return (
@@ -88,29 +88,43 @@ const SignUp = ({ setIsAuthenticated }) => {
                 required
               />
             </div>
-            <div>
+            <div className="relative">
               <label className="block text-lg text-white mb-2">Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} // ✅ Dynamically change type
                 name="password"
                 placeholder="Create a password"
                 value={formData.password}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-md"
+                onChange={handleChange} // ✅ Corrected function
+                className="w-full p-4 pr-12 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-md"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-14 text-gray-500 hover:text-gray-300"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
-            <div>
+            <div className="relative mt-4">
               <label className="block text-lg text-white mb-2">Confirm Password</label>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} // ✅ Keep it consistent
                 name="confirmPassword"
                 placeholder="Confirm your password"
                 value={formData.confirmPassword}
-                onChange={handleChange}
-                className="w-full p-4 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-md"
+                onChange={handleChange} // ✅ Corrected function
+                className="w-full p-4 pr-12 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 shadow-md"
                 required
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-14 text-gray-500 hover:text-gray-300"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
             </div>
             {error && (
               <p className="text-red-500 text-center">{error}</p>

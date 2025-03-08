@@ -7,6 +7,7 @@ export const games: Game[] = [
     description: 'A 5v5 character-based tactical shooter',
     image: '/valo.webp',
     genre: ['FPS', 'Tactical Shooter'],
+    link: 'valorant',
   },
   {
     id: '2',
@@ -14,6 +15,7 @@ export const games: Game[] = [
     description: 'A team-based strategy game',
     image: '/league.webp',
     genre: ['MOBA', 'Strategy'],
+    link: 'lol',
   },
   {
     id: '3',
@@ -21,6 +23,7 @@ export const games: Game[] = [
     description: 'A free-to-play battle royale game',
     image: '/apex.webp',
     genre: ['Battle Royale', 'FPS'],
+    link: 'apex',
   },
   {
     id: '4',
@@ -28,6 +31,7 @@ export const games: Game[] = [
     description: 'A first-person shooter franchise',
     image: '/cod.webp',
     genre: ['FPS', 'Action'],
+    link: 'cod',
   },
   {
     id: '5',
@@ -35,6 +39,7 @@ export const games: Game[] = [
     description: 'A battle royale and building survival game',
     image: '/fortnite.webp',
     genre: ['Battle Royale', 'Survival'],
+    link: 'fortnite',
   },
   {
     id: '6',
@@ -42,6 +47,7 @@ export const games: Game[] = [
     description: 'A multiplayer online battle arena game',
     image: 'dota.webp',
     genre: ['MOBA', 'Strategy'],
+    link: 'dota2',
   },
   {
     id: '7',
@@ -49,6 +55,7 @@ export const games: Game[] = [
     description: 'A soccer video game played with rocket-powered cars',
     image: 'rl.webp',
     genre: ['Sports', 'Racing'],
+    link: 'rl',
   },
   {
     id: '8',
@@ -56,6 +63,7 @@ export const games: Game[] = [
     description: 'A tactical first-person shooter',
     image: 'cs.webp',
     genre: ['FPS', 'Tactical Shooter'],
+    link: 'cs2',
   },
   {
     id: '9',
@@ -63,6 +71,7 @@ export const games: Game[] = [
     description: 'A battle royale shooter game',
     image: 'pubg.webp',
     genre: ['Battle Royale', 'Shooter'],
+    link: 'pubg',
   },
   {
     id: '10',
@@ -70,5 +79,8 @@ export const games: Game[] = [
     description: 'An action MMO with a single evolving world',
     image: 'd2.webp',
     genre: ['FPS', 'MMO'],
+    link: 'd2',
   },
 ];
+
+export default games;

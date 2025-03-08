@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import PageNotFound from './components/NotFound';
-import Settings from './components/settings';
+import Settings from './components/Settings';
 import PrivacyPolicy from './components/Privacy';
 import TermsAndConditions from './components/Terms';
 
@@ -144,86 +144,46 @@ function App() {
               <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
 
-              {/* Game-Specific Routes - Protected */}
+              {/* Game-Specific Routes*/}
               <Route 
                 path="/valorant" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Valorant />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Valorant /> : <Navigate to="/signin" replace />} 
               />
               <Route 
                 path="/apex" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Apex />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Apex /> : <Navigate to="/signin" replace />}
               />
               <Route 
                 path="/cod" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Cod />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Cod /> : <Navigate to="/signin" replace />}
               />
               <Route 
                 path="/cs2" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Cs2 />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Cs2 /> : <Navigate to="/signin" replace />}
               />
               <Route 
                 path="/d2" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <D2 />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <D2 /> : <Navigate to="/signin" replace />} 
               />
               <Route 
                 path="/dota2" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Dota2 />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Dota2 /> : <Navigate to="/signin" replace />}
               />
               <Route 
                 path="/fortnite" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Fortnite />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Fortnite /> : <Navigate to="/signin" replace />}
               />
               <Route 
                 path="/lol" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Lol />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Lol /> : <Navigate to="/signin" replace />} 
               />
               <Route 
                 path="/pubg" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Pubg />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Pubg /> : <Navigate to="/signin" replace /> }
               />
               <Route 
                 path="/rl" 
-                element={
-                  <ProtectedRoute isAuthenticated={isAuthenticated}>
-                    <Rl />
-                  </ProtectedRoute>
-                } 
+                element = {isAuthenticated ? <Rl /> : <Navigate to="/signin" replace />}
               />
             </Routes>
           </main>

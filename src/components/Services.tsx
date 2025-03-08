@@ -27,7 +27,6 @@ const Services = () => {
       <h2 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300 mb-12">
         Our Services
       </h2>
-
       <div className="max-w-6xl mx-auto grid gap-10 px-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service, index) => (
           <div

@@ -11,7 +11,7 @@ const GameCard = ({ game }: GameCardProps) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/${game.name.toLowerCase().replace(/\s+/g, '-')}`);
+    navigate(`/${game.link}`);
   };
 
   return (
