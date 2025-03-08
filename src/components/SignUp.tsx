@@ -41,7 +41,7 @@ const SignUp = ({ setIsAuthenticated }) => {
       // Check for token in the response and set authentication
       if (response.status === 200) {
         setIsAuthenticated(true);
-        localStorage.setItem('token', response.data.token); // Store token in local storage
+        localStorage.setItem('authToken', response.data.token); // Store token in local storage
         navigate('/'); // Redirect to homepage after successful signup
       } else {
         setError('Error signing up');

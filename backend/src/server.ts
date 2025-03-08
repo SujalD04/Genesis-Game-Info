@@ -4,14 +4,16 @@ import cors from "cors";
 import connectDB from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import valorantRoutes from "./routes/valorantRoutes";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST"], allowedHeaders: ["Content-Type"] }));
+app.use(cors({ origin: "http://localhost:5173", methods: ["GET", "POST"], allowedHeaders: ["Content-Type"], credentials: true, }));
 app.use(express.json());
+app.use(cookieParser());
 
 // Connect to DB and Start Server
 connectDB().then(() => {

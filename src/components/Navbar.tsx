@@ -4,7 +4,7 @@ import { Menu, X, ChevronDown, GamepadIcon, LogOut, Settings as SettingsIcon, Sh
 import { motion, AnimatePresence } from 'framer-motion';
 import logo from "../logo.png";
 import { useNavigate } from 'react-router-dom';
-
+import axios from "axios";
 
 
 const Navbar = () => {
@@ -14,15 +14,22 @@ const Navbar = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('authToken'));
   const navigate = useNavigate();
 
-
-  const handleLogout = () => {
-    // Clear all session data from localStorage
-    localStorage.removeItem('authToken');  // If you store any auth tokens
-    sessionStorage.clear();  // If you're storing any session-specific data
+  const handleLogout = async () => {
+    try {
+      console.log("Logging out..."); // Debugging step
+      const response = await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+      
+      console.log("Logout response:", response.data); // Log API response
+      
+      setIsAuthenticated(false);
+      console.log("isAuthenticated after logout:", isAuthenticated); // Debug state change
+      
+      navigate("/signin", { replace: true });
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };  
   
-    // Redirect to the Sign In page
-    navigate('/signin', { replace: true });
-  };
 
   return (
     <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-md shadow-md z-50 font-orbitron text-xl font-bold">
@@ -260,12 +267,13 @@ const Navbar = () => {
                 <FileTextIcon className="inline h-4 w-4 mr-2" />
                 Terms & Conditions
               </Link>
-              <button
-                onClick={handleLogout} 
-                className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
-                <LogOut className="inline h-4 w-4 mr-2" />
-                Logout
-              </button>
+              {isAuthenticated && (
+                <button onClick={handleLogout} className="w-full text-left text-gray-300 hover:text-blue-400 transition duration-200">
+                  <LogOut className="inline h-4 w-4 mr-2" />
+                  Logout
+                </button>
+              )}
+
             </motion.div>            
             )}
           </AnimatePresence>

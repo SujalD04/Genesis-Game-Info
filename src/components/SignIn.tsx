@@ -15,23 +15,22 @@ const SignIn = ({ setIsAuthenticated }) => {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signin', {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/signin",
+        { email, password },
+        { withCredentials: true } // ✅ Enables sending/receiving cookies
+      );
   
-      // Assuming your response returns a token if successful
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token); // Save token in localStorage
-        setIsAuthenticated(true);  // Set authentication status to true
-        navigate('/');  // Redirect to homepage after successful login
+        setIsAuthenticated(true);  
+        navigate("/");  
       }
     } catch (error) {
       console.error(error);
-      setError(error.response?.data?.msg || 'Error signing in');
+      setError(error.response?.data?.msg || "Error signing in");
     }
-  };  
-
+  };
+  
   return (
     <WavyBackground>
       <div className="flex items-center justify-center min-h-screen w-full max-w-6xl mx-auto px-4">

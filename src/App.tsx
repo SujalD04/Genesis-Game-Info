@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import axios from 'axios';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -49,17 +50,26 @@ function App() {
 
   const hideNavbarFooter = isInvalidRoute || location.pathname === '/signin' || location.pathname === '/signup';
 
-  // Dummy authentication check - Replace with actual logic
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      setIsAuthenticated(true);
-    } else {
-      setIsAuthenticated(false);
-    }
-    setLoading(false);  
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/auth/protected", {
+          withCredentials: true, 
+        });
+  
+        if (response.status === 200) {
+          setIsAuthenticated(true);
+        }
+      } catch (error) {
+        setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+    checkAuth();
   }, []);
-
+  
+  
   useEffect(() => {
     console.log('IsAuthenticated:', isAuthenticated); // Logs to console when isAuthenticated changes
   }, [isAuthenticated]);
