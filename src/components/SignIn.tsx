@@ -27,13 +27,14 @@ const SignIn: React.FC<SignInProps> = ({ setIsAuthenticated }) => {
   }
 
   const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     e.preventDefault();
     try {
       const response: SignInResponse = await axios.post(
-        "http://localhost:5000/api/auth/signin",
+        `${API_BASE_URL}/api/auth/signin`,
         { email, password },
         { withCredentials: true } // ✅ Enables sending/receiving cookies
-      );
+      );      
 
       if (response.status === 200) {
         setIsAuthenticated(true);

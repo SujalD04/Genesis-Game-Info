@@ -34,6 +34,9 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState(true);  
   const location = useLocation();
   const [isInvalidRoute, setIsInvalidRoute] = useState(false);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
 
   // Define valid routes (you can extend this as needed)
   const validRoutes = ['/signin', '/signup', '/', '/games', '/about', '/contact'];
@@ -52,9 +55,9 @@ const App: React.FC = () => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/auth/protected", {
-          withCredentials: true, 
-        });
+        const response = await axios.get(`${API_BASE_URL}/api/auth/protected`, {
+          withCredentials: true,
+        });        
   
         if (response.status === 200) {
           setIsAuthenticated(true);

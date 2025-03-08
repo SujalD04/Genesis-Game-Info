@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 
-const BASE_URL = "http://localhost:5000";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const categories = [
   { title: "Agents", key: "characters" },
@@ -40,7 +40,7 @@ const Valorant = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    fetch(`${BASE_URL}/api/valorant/content`)
+    fetch(`${API_BASE_URL}/api/valorant/content`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched Data:", data);

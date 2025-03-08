@@ -16,11 +16,16 @@ const Navbar: React.FC<NavbarProps> = ({ isAuthenticated, setIsAuthenticated }) 
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleLogout = async () => {
     try {
       console.log("Logging out..."); // Debugging step
-      const response = await axios.post("http://localhost:5000/api/auth/logout", {}, { withCredentials: true });
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/logout`,
+        {},
+        { withCredentials: true }
+      );      
       
       console.log("Logout response:", response.data); // Log API response
       

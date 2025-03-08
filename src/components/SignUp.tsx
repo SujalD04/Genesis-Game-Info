@@ -26,6 +26,8 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
     setFormData({ ...formData, [(e.target as HTMLInputElement).name]: (e.target as HTMLInputElement).value });
   };
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   // Handle Sign-Up
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
