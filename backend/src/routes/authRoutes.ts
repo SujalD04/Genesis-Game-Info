@@ -12,12 +12,15 @@ interface AuthenticatedRequest extends Request {
   user?: { userId: string }; // Ensure the request includes the user property
 }
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
 // Signup Route
 router.post(
   "/signup",
   [
-    body("email").isEmail().withMessage("Invalid email"),
-    body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
+    body("email").matches(emailRegex).isEmail().withMessage("Invalid email"),
+    body("password").matches(passwordRegex).withMessage("Password must be at least 8 characters, include a letter and a number"),
     body("username").notEmpty().withMessage("Username is required"),
   ],
   async (req: Request, res: Response) => {
@@ -48,7 +51,7 @@ router.post(
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
-        maxAge: 3600000, // Fix: Removed incorrect semicolon
+        maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
       res.json({ msg: "Signup successful" });

@@ -99,16 +99,14 @@ function App() {
               {/* Main Sections */}
               <Route 
                 path="/" 
-                element={isAuthenticated ? (
+                element={
                   <>
                     <Hero />
                     <Services />
                     <Testimonials />
                     <GamesAnimation />
                   </>
-                ) : (
-                  <Navigate to="/signin" replace />
-                )}
+                  }
               />
 
               <Route 
