@@ -33,14 +33,27 @@ const GamesSection = () => {
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black font-roboto">
-      <div className="max-w-7xl mx-auto">
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/bg3.webp)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+          width: '100%',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      </div>
+      <div className="max-w-7xl mx-auto z-1">
         {/* Title Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-12 z-10 relative"
         >
           <h2 className="text-4xl font-extrabold mb-4 text-blue-400">
             Select Your{' '}
@@ -79,11 +92,11 @@ const GamesSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
             viewport={{ once: true }}
-            className="flex flex-wrap gap-2"
+            className="flex flex-wrap gap-2 z-[1]"
           >
             <button
               onClick={() => setSelectedGenre(null)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-lg ${
+              className={`px-4 z-1 py-2 rounded-full text-sm font-semibold transition-colors shadow-lg ${
                 !selectedGenre
                   ? 'bg-blue-500 text-white'
                   : 'bg-black/50 text-gray-300 hover:bg-blue-500/20 hover:text-white'
@@ -95,7 +108,7 @@ const GamesSection = () => {
               <button
                 key={genre}
                 onClick={() => setSelectedGenre(genre)}
-                className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors shadow-lg ${
+                className={`px-4 z-[1] py-2 rounded-full text-sm font-semibold transition-colors shadow-lg ${
                   selectedGenre === genre
                     ? 'bg-blue-500 text-white'
                     : 'bg-black/50 text-gray-300 hover:bg-blue-500/20 hover:text-white'

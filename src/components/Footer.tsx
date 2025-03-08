@@ -4,7 +4,7 @@ import { Instagram, Twitter, Github, Linkedin } from 'lucide-react';
 
 const Footer = () => {
   return (
-    <footer className="bg-black/90 text-gray-400 py-8 mt-auto">
+    <footer className="bg-black/50 backdrop-blur-md text-gray-400 py-8 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           {/* Copyright and Description */}
@@ -17,7 +17,7 @@ const Footer = () => {
           <div className="flex space-x-4">
             <motion.a
               whileHover={{ scale: 1.1 }}
-              href="https://instagram.com"
+              href="https://www.instagram.com/sujald_04/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-pink-500 transition-colors"
@@ -26,7 +26,7 @@ const Footer = () => {
             </motion.a>
             <motion.a
               whileHover={{ scale: 1.1 }}
-              href="https://twitter.com"
+              href="https://x.com/SujalD_04"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-400 transition-colors"
@@ -35,7 +35,7 @@ const Footer = () => {
             </motion.a>
             <motion.a
               whileHover={{ scale: 1.1 }}
-              href="https://github.com"
+              href="https://github.com/SujalD04"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-white transition-colors"
@@ -44,7 +44,7 @@ const Footer = () => {
             </motion.a>
             <motion.a
               whileHover={{ scale: 1.1 }}
-              href="https://linkedin.com"
+              href="https://www.linkedin.com/in/sujal-dixit-595287269"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-400 hover:text-blue-600 transition-colors"

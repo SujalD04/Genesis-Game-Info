@@ -67,10 +67,10 @@ router.post("/signin", async (req: Request, res: Response) => {
 
   try {
     const user = await User.findOne({ email });
-    if (!user) return res.status(400).json({ msg: "Invalid credentials" });
+    if (!user) return res.status(400).json({ msg: "Account does not exist. Please Create a new account." });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Invalid credentials" });
+    if (!isMatch) return res.status(400).json({ msg: "Email or Password might be wrong." });
 
     const payload = { userId: user.id };
     const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "1h" });
@@ -80,7 +80,7 @@ router.post("/signin", async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000
+      maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({ msg: "Login successful" });

@@ -18,6 +18,17 @@ const Testimonials = () => {
 
   return (
     <section className="py-16 bg-black/95 backdrop-blur-md">
+      <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/bg2.webp)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      </div>
       <h2 className="text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-300 mb-12">
         What Our Users Say
       </h2>

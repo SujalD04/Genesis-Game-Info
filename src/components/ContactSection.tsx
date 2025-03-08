@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Send } from 'lucide-react';
+import { Send } from 'react-feather';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -10,28 +10,78 @@ const ContactSection = () => {
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-    console.log('Form submitted:', formData);
+  const [statusMessage, setStatusMessage] = useState({
+    message: "",
+    type: "", 
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData);
+
+    try {
+      const response = await fetch("https://formspree.io/f/meoajpye", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatusMessage({
+          message: "Message sent successfully!",
+          type: "success",
+        });
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        }); 
+      } else {
+        setStatusMessage({
+          message: "Error sending message. Please try again.",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      setStatusMessage({
+        message: "Error sending message. Please try again.",
+        type: "error",
+      });
+    }
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-black font-roboto">
+    <section className="py-20 px-4 sm:px-6 lg:px-8 font-roboto">
+            <div
+              className="absolute inset-0 z-[0] h-full"
+              style={{
+                backgroundImage: 'url(/bg5.webp)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed',
+                minHeight: '100vh',
+                width: '100%',
+              }}
+            >
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      </div>
       <div className="max-w-4xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: 'easeOut' }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-12 z-10 relative"
         >
           <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
             Contact{' '}
@@ -50,7 +100,9 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           onSubmit={handleSubmit}
-          className="space-y-6 bg-gradient-to-br from-gray-800 via-gray-900 to-black p-8 rounded-xl shadow-lg"
+          className="space-y-6 bg-gradient-to-br from-gray-800 via-gray-900 to-black p-8 rounded-xl shadow-lg z-10 relative"
+          method='POST'
+          action='https://formspree.io/f/meoajpye'
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
@@ -127,6 +179,18 @@ const ContactSection = () => {
               placeholder="Your message"
             />
           </div>
+
+          {statusMessage.message && (
+            <div
+              className={`p-4 rounded-lg text-center font-semibold mt-4 ${
+                statusMessage.type === "success"
+                  ? "bg-green-500 text-white"
+                  : "bg-red-500 text-white"
+              }`}
+            >
+              {statusMessage.message}
+            </div>
+          )}
 
           <motion.button
             whileHover={{ scale: 1.03 }}

@@ -22,9 +22,9 @@ const teamMembers: TeamMember[] = [
       '/dev1.jpeg',
     bio: 'Gaming enthusiast and full-stack developer with a passion for creating immersive digital experiences.',
     social: {
-      github: 'https://github.com',
-      linkedin: 'https://linkedin.com',
-      twitter: 'https://twitter.com',
+      github: 'https://github.com/SujalD04',
+      linkedin: 'https://www.linkedin.com/in/sujal-dixit-595287269',
+      twitter: 'https://x.com/SujalD_04',
     },
   },
 ];
@@ -32,13 +32,26 @@ const teamMembers: TeamMember[] = [
 const AboutSection = () => {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 min-h-screen w-full bg-black font-roboto">
+            <div
+        className="absolute inset-0 z-0"
+        style={{
+          backgroundImage: 'url(/bg4.webp)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed',
+          minHeight: '100vh',
+          width: '100%',
+        }}
+      >
+        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      </div>
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-12 z-10 relative"
         >
           <h2 className="text-4xl font-extrabold text-blue-400 mb-4">
             About{' '}
