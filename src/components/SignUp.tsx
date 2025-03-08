@@ -40,11 +40,15 @@ const SignUp: React.FC<SignUpProps> = ({ setIsAuthenticated }) => {
 
     try {
       // Send sign-up request to backend
-      const response = await axios.post('http://localhost:5000/api/auth/signup', {
-        username: formData.username,  
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`,
+        {
+          username: formData.username,
+          email: formData.email,
+          password: formData.password,
+        }
+      );
+      
 
       if (response.status === 200) {
         setIsAuthenticated(true); 
