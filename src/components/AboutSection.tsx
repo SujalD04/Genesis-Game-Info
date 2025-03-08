@@ -32,17 +32,17 @@ const teamMembers: TeamMember[] = [
 const AboutSection = () => {
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 min-h-screen w-full bg-black font-roboto">
-            <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/bg4.webp)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          minHeight: '100vh',
-          width: '100%',
-        }}
-      >
+      <div
+              className="absolute inset-0 z-0"
+              style={{
+                backgroundImage: 'url(/bg4.webp)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundAttachment: 'fixed',
+                minHeight: '100vh',
+                width: '100%',
+              }}
+            >
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
       </div>
       <div className="max-w-7xl mx-auto">
