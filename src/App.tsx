@@ -17,6 +17,7 @@ import PageNotFound from './components/NotFound';
 import Settings from './components/Settings';
 import PrivacyPolicy from './components/Privacy';
 import TermsAndConditions from './components/Terms';
+import { Analytics } from "@vercel/analytics/react"
 
 import Valorant from './pages/valorant';
 import Apex from './pages/apex';
@@ -192,6 +193,9 @@ const App: React.FC = () => {
 
           {/* Footer */}
           {!hideNavbarFooter && <Footer />}
+
+          {/*Analytics */}
+          <Analytics />
         </>
       )}
     </div>
