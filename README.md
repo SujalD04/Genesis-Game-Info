@@ -63,10 +63,10 @@ Genesis is built with the following technologies:
   - MongoDB for storing game-related data and user sessions
 
 - **Authentication**:
-  - Firebase for user authentication (Google sign-in, email/password login)
+  - Firebase for user authentication (Google sign-in, email/password login), JSON Web Tokens
   
 - **Deployment**:
-  - Deployed on Vercel (Frontend) and Heroku (Backend)
+  - Deployed on Vercel (Frontend) and Render (Backend)
 
 ## Installation
 
