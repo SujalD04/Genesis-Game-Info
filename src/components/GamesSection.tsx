@@ -14,9 +14,9 @@ const GamesSection = () => {
   useEffect(() => {
     // Simulate an API call
     setTimeout(() => {
-      setFilteredGames(games); // Set games data (replace with actual API call)
-      setLoading(false); // Set loading to false after fetching
-    }, 2000); // Simulate delay for loading
+      setFilteredGames(games); 
+      setLoading(false); 
+    }, 2000); 
   }, []);
 
   const allGenres = Array.from(
