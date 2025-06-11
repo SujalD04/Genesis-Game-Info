@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 // --- API and Endpoint Configuration ---
-const MARVEL_API_BASE_URL = 'https://genesis-game-info.vercel.app/api';
+const MARVEL_API_BASE_URL = '/api';
 
 const MARVEL_ENDPOINTS = {
   heroList: `${MARVEL_API_BASE_URL}/heroes`,
