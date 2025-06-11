@@ -29,6 +29,7 @@ import Fortnite from './pages/fortnite';
 import Lol from './pages/lol';
 import Pubg from './pages/pubg';
 import Rl from './pages/rl';
+import Rivals from './pages/rivals';
 
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(true);
@@ -187,6 +188,10 @@ const App: React.FC = () => {
               <Route 
                 path="/rl" 
                 element = {isAuthenticated ? <Rl /> : <Navigate to="/signin" replace />}
+              />
+              <Route 
+                path="/rivals" 
+                element = {isAuthenticated ? <Rivals /> : <Navigate to="/signin" replace />}
               />
             </Routes>
           </main>

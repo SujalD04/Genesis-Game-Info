@@ -27,14 +27,6 @@ export const games: Game[] = [
   },
   {
     id: '4',
-    name: 'Call of Duty',
-    description: 'A first-person shooter franchise',
-    image: '/cod.webp',
-    genre: ['FPS', 'Action'],
-    link: 'cod',
-  },
-  {
-    id: '5',
     name: 'Fortnite',
     description: 'A battle royale and building survival game',
     image: '/fortnite.webp',
@@ -42,7 +34,7 @@ export const games: Game[] = [
     link: 'fortnite',
   },
   {
-    id: '6',
+    id: '5',
     name: 'DOTA 2',
     description: 'A multiplayer online battle arena game',
     image: 'dota.webp',
@@ -50,15 +42,7 @@ export const games: Game[] = [
     link: 'dota2',
   },
   {
-    id: '7',
-    name: 'Rocket League',
-    description: 'A soccer video game played with rocket-powered cars',
-    image: 'rl.webp',
-    genre: ['Sports', 'Racing'],
-    link: 'rl',
-  },
-  {
-    id: '8',
+    id: '6',
     name: 'Counter-Strike: 2',
     description: 'A tactical first-person shooter',
     image: 'cs.webp',
@@ -66,7 +50,7 @@ export const games: Game[] = [
     link: 'cs2',
   },
   {
-    id: '9',
+    id: '7',
     name: 'PUBG',
     description: 'A battle royale shooter game',
     image: 'pubg.webp',
@@ -74,13 +58,13 @@ export const games: Game[] = [
     link: 'pubg',
   },
   {
-    id: '10',
-    name: 'Destiny 2',
-    description: 'An action MMO with a single evolving world',
-    image: 'd2.webp',
-    genre: ['FPS', 'MMO'],
-    link: 'd2',
-  },
+    id: '8',
+    name: 'Marvel Rivals',
+    description: 'an RPG FPS game with marvel characters',
+    image: 'rivals.webp',
+    genre: ['FPS', 'Action'],
+    link: 'rivals',
+  }
 ];
 
 export default games;
