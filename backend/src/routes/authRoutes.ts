@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express"; // Import Request and Response types
+// backend/src/routes/authRoutes.ts
+import express, { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
@@ -44,18 +45,25 @@ router.post(
       await newUser.save();
 
       const payload = { userId: newUser.id };
-      const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "1h" });
+      // --- START CHANGE ---
+      // Changed JWT expiration to 7 days to match cookie maxAge
+      const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "7d" });
+      // --- END CHANGE ---
 
       // Set httpOnly Cookie
       res.cookie("authToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        // Note: sameSite: "strict" can be problematic for cross-origin requests.
+        // It's recommended to use "lax" or "none" with secure: true if your
+        // frontend and backend are on different domains/subdomains.
+        sameSite: "strict", // Keeping user's original preference, but "lax" is often safer.
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
       res.json({ msg: "Signup successful" });
     } catch (err) {
+      console.error(err); // Log the error for server-side debugging
       res.status(500).json({ msg: "Server error" });
     }
   }
@@ -73,13 +81,16 @@ router.post("/signin", async (req: Request, res: Response) => {
     if (!isMatch) return res.status(400).json({ msg: "Email or Password might be wrong." });
 
     const payload = { userId: user.id };
-    const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "1h" });
+    // --- START CHANGE ---
+    // Changed JWT expiration to 7 days to match cookie maxAge
+    const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "7d" });
+    // --- END CHANGE ---
 
     // Fix: Store token in httpOnly Cookie instead of returning it in JSON
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      // Changed from "strict" to "lax"
+      // Changed from "strict" to "lax" for better cross-site compatibility
       sameSite: "lax", // This is often sufficient for SPAs on different subdomains
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -96,7 +107,7 @@ router.post("/logout", (req: Request, res: Response) => {
   res.clearCookie("authToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax", // Match the setting from above
+    sameSite: "lax", // Match the setting from signin
   });
   res.json({ msg: "Logged out" });
 });
@@ -118,10 +129,9 @@ router.get("/auth/status", (req: Request, res: Response) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "yourSecretKey");
     res.json({ isAuthenticated: true, user: decoded });
   } catch (err) {
+    console.error("Auth status check failed:", err); // Log the error for server-side debugging
     res.json({ isAuthenticated: false });
   }
 });
-
-
 
 export default router;

@@ -32,7 +32,7 @@ import Rl from './pages/rl';
 import Rivals from './pages/rivals';
 
 const App: React.FC = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);  
   const location = useLocation();
   const [isInvalidRoute, setIsInvalidRoute] = useState(false);
