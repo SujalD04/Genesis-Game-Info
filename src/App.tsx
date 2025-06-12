@@ -299,7 +299,6 @@ const Loader = () => {
 };
 
 
-
 const App: React.FC = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true); // Initial state is loading
@@ -318,176 +317,183 @@ const App: React.FC = () => {
   // Effect to check for invalid routes based on current pathname
   useEffect(() => {
     const isKnownRoute = validRoutes.some(route => {
-      // Basic check for exact route matches
       return route === location.pathname;
     });
-    setIsInvalidRoute(!isKnownRoute); // Set true if route is not known
-  }, [location.pathname, validRoutes]); // Re-run if pathname or validRoutes change
+    // Set isInvalidRoute based on whether the current path is NOT in validRoutes AND it's not the root
+    setIsInvalidRoute(!isKnownRoute && location.pathname !== '/');
+  }, [location.pathname, validRoutes]);
 
-  // Determine if Navbar and Footer should be hidden
   const hideNavbarFooter = isInvalidRoute || location.pathname === '/signin' || location.pathname === '/signup';
 
   // Main useEffect for authentication and loading state management
   useEffect(() => {
-    const checkAuthAndLoad = async () => {
-      // Create a promise for a minimum loading time of 5 seconds
-      const minLoadTimePromise = new Promise(resolve => setTimeout(resolve, 5000));
+    // Only run auth check and global loader if the route is valid
+    if (!isInvalidRoute) {
+      const checkAuthAndLoad = async () => {
+        // Create a promise for a minimum loading time of 5 seconds
+        const minLoadTimePromise = new Promise(resolve => setTimeout(resolve, 5000));
 
-      try {
-        // Await both the minimum load time and the actual authentication status check
-        const [_, authResponse] = await Promise.all([
-          minLoadTimePromise, // Ensures loader is shown for at least this duration
-          axios.get(`${API_BASE_URL}/api/auth/status`, { withCredentials: true })
-        ]);
+        try {
+          // Await both the minimum load time and the actual authentication status check
+          const [_, authResponse] = await Promise.all([
+            minLoadTimePromise, // Ensures loader is shown for at least this duration
+            axios.get(`${API_BASE_URL}/api/auth/status`, { withCredentials: true })
+          ]);
 
-        // Update authentication state based on the API response
-        if (authResponse.data && typeof authResponse.data.isAuthenticated === 'boolean') {
-          setIsAuthenticated(authResponse.data.isAuthenticated);
-        } else {
-          console.warn("Unexpected response structure from /api/auth/status:", authResponse.data);
+          // Update authentication state based on the API response
+          if (authResponse.data && typeof authResponse.data.isAuthenticated === 'boolean') {
+            setIsAuthenticated(authResponse.data.isAuthenticated);
+          } else {
+            console.warn("Unexpected response structure from /api/auth/status:", authResponse.data);
+            setIsAuthenticated(false);
+          }
+        } catch (error) {
+          // Log authentication check errors and set isAuthenticated to false
+          console.error("Authentication check failed:", error);
           setIsAuthenticated(false);
+        } finally {
+          // Always set loading to false after both promises have resolved
+          setLoading(false);
         }
-      } catch (error) {
-        // Log authentication check errors and set isAuthenticated to false
-        console.error("Authentication check failed:", error);
-        setIsAuthenticated(false);
-      } finally {
-        // Always set loading to false after both promises have resolved
-        setLoading(false);
-      }
-    };
-
-    checkAuthAndLoad(); // Execute the async function on component mount
-  }, [API_BASE_URL]); // Dependency array includes API_BASE_URL if it can change
+      };
+      checkAuthAndLoad(); // Execute the async function
+    } else {
+      // If the route is invalid, ensure loading is immediately false
+      setLoading(false);
+    }
+  }, [API_BASE_URL, isInvalidRoute]); // Dependency array includes API_BASE_URL and isInvalidRoute
 
   // Effect for debugging authentication state changes
   useEffect(() => {
     console.log('IsAuthenticated:', isAuthenticated); // Logs current authentication status
-  }, [isAuthenticated]); // Re-run when isAuthenticated state changes
+  }, [isAuthenticated]);
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      {/* Conditional rendering of the Loader or the main application content */}
-      {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <Loader /> {/* Display the custom Loader component */}
-        </div>
+      {/* Conditional rendering for PageNotFound, Loader, or Main Content */}
+      {isInvalidRoute ? (
+        <PageNotFound /> // Render PageNotFound instantly for invalid routes
       ) : (
-        <>
-          {/* Navbar component, conditionally rendered */}
-          {!hideNavbarFooter && (
-            <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
-          )}
+        loading ? (
+          // Display the custom Loader component while valid routes are loading
+          <div className="flex justify-center items-center h-screen">
+            <Loader />
+          </div>
+        ) : (
+          // Render main application content once loading is complete for valid routes
+          <>
+            {/* Navbar component, conditionally rendered */}
+            {!hideNavbarFooter && (
+              <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
+            )}
 
-          <main className="flex-grow">
-            {/* React Router Routes for navigation */}
-            <Routes>
-              {/* Catch-all route for Page Not Found */}
-              <Route
-                path="*"
-                element={<PageNotFound />}
-              />
+            <main className="flex-grow">
+              {/* React Router Routes for navigation */}
+              <Routes>
+                {/* No explicit Route for "*" here, as it's handled by isInvalidRoute check at top level */}
 
-              {/* Main landing page route */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <Hero />
-                    <Services />
-                    <Testimonials />
-                    <GamesAnimation />
-                  </>
-                }
-              />
+                {/* Main landing page route */}
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <Hero />
+                      <Services />
+                      <Testimonials />
+                      <GamesAnimation />
+                    </>
+                  }
+                />
 
-              {/* Protected Routes: accessible only if isAuthenticated is true, otherwise redirects to signin */}
-              <Route
-                path="/games"
-                element={isAuthenticated ? <GamesSection /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/about"
-                element={isAuthenticated ? <AboutSection /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/contact"
-                element={isAuthenticated ? <ContactSection /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/settings"
-                element={isAuthenticated ? <Settings /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/privacy"
-                element={isAuthenticated ? <PrivacyPolicy /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/terms"
-                element={isAuthenticated ? <TermsAndConditions /> : <Navigate to="/signin" replace />}
-              />
+                {/* Protected Routes: accessible only if isAuthenticated is true, otherwise redirects to signin */}
+                <Route
+                  path="/games"
+                  element={isAuthenticated ? <GamesSection /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/about"
+                  element={isAuthenticated ? <AboutSection /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/contact"
+                  element={isAuthenticated ? <ContactSection /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/settings"
+                  element={isAuthenticated ? <Settings /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/privacy"
+                  element={isAuthenticated ? <PrivacyPolicy /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/terms"
+                  element={isAuthenticated ? <TermsAndConditions /> : <Navigate to="/signin" replace />}
+                />
 
-              {/* Authentication Routes: accessible regardless of authentication status */}
-              <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
-              <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
+                {/* Authentication Routes: accessible regardless of authentication status */}
+                <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
+                <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
 
-              {/* Game-Specific Routes: also protected */}
-              <Route
-                path="/valorant"
-                element={isAuthenticated ? <Valorant /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/apex"
-                element={isAuthenticated ? <Apex /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/cod"
-                element={isAuthenticated ? <Cod /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/cs2"
-                element={isAuthenticated ? <Cs2 /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/d2"
-                element={isAuthenticated ? <D2 /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/dota2"
-                element={isAuthenticated ? <Dota2 /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/fortnite"
-                element={isAuthenticated ? <Fortnite /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/lol"
-                element={isAuthenticated ? <Lol /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/pubg"
-                element={isAuthenticated ? <Pubg /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/rl"
-                element={isAuthenticated ? <Rl /> : <Navigate to="/signin" replace />}
-              />
-              <Route
-                path="/rivals"
-                element={isAuthenticated ? <Rivals /> : <Navigate to="/signin" replace />}
-              />
-            </Routes>
-          </main>
+                {/* Game-Specific Routes: also protected */}
+                <Route
+                  path="/valorant"
+                  element={isAuthenticated ? <Valorant /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/apex"
+                  element={isAuthenticated ? <Apex /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/cod"
+                  element={isAuthenticated ? <Cod /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/cs2"
+                  element={isAuthenticated ? <Cs2 /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/d2"
+                  element={isAuthenticated ? <D2 /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/dota2"
+                  element={isAuthenticated ? <Dota2 /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/fortnite"
+                  element={isAuthenticated ? <Fortnite /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/lol"
+                  element={isAuthenticated ? <Lol /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/pubg"
+                  element={isAuthenticated ? <Pubg /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/rl"
+                  element={isAuthenticated ? <Rl /> : <Navigate to="/signin" replace />}
+                />
+                <Route
+                  path="/rivals"
+                  element={isAuthenticated ? <Rivals /> : <Navigate to="/signin" replace />}
+                />
+              </Routes>
+            </main>
 
-          {/* Footer component, conditionally rendered */}
-          {!hideNavbarFooter && <Footer />}
+            {/* Footer component, conditionally rendered */}
+            {!hideNavbarFooter && <Footer />}
 
-          {/* Vercel Analytics component */}
-          <Analytics />
-        </>
+            {/* Vercel Analytics component */}
+            <Analytics />
+          </>
+        )
       )}
     </div>
   );
 }
 
 export default App;
+
