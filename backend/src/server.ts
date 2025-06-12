@@ -11,7 +11,12 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors({ origin: ["http://localhost:5173", "https://genesis-game-info.vercel.app", "https://*.vercel.app"], methods: ["GET", "POST"], allowedHeaders: ["Content-Type"], credentials: true, }));
+app.use(cors({
+  origin: ['http://localhost:5173', 'https://genesis-game-info.vercel.app'], // Your frontend origins
+  credentials: true, // Crucial for allowing cookies to be sent/received
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow necessary methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allow necessary headers
+}));
 app.use(express.json());
 app.use(cookieParser());
 
