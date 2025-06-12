@@ -12,7 +12,7 @@ const GamesAnimation = () => {
     { src: '/dota2.png', url: 'https://www.dota2.com/home' },
     { src: '/rocketleague.png', url: 'https://www.rocketleague.com/' },
     { src: '/pubg.png', url: 'https://pubg.com/' },
-    { src: '/destiny2.png', url: 'https://www.bungie.net/7/en/Destiny2' },
+    { src: '/destiny2.png', url: 'https://www.bungie.net/7/en/Destiny' },
   ];
 
   return (
