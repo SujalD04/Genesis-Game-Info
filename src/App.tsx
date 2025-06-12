@@ -1,8 +1,12 @@
 // frontend/src/App.tsx
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom'; // Although not directly used here, typically in index.tsx
+// The BrowserRouter is typically used higher up in the component tree, often in index.tsx
+// import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
+import { motion } from 'framer-motion'; // motion is required for the embedded Loader component
+
+// Assuming these component files exist in your project structure
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -20,6 +24,7 @@ import PrivacyPolicy from './components/Privacy';
 import TermsAndConditions from './components/Terms';
 import { Analytics } from "@vercel/analytics/react"
 
+// Assuming these page component files exist in your project structure
 import Valorant from './pages/valorant';
 import Apex from './pages/apex';
 import Cod from './pages/cod';
@@ -32,16 +37,277 @@ import Pubg from './pages/pubg';
 import Rl from './pages/rl';
 import Rivals from './pages/rivals';
 
+// Embedded Loader component directly within this file to avoid import resolution issues
+const Loader = () => {
+  const [progress, setProgress] = useState(0);
+  
+  // Simulate loading progress over 5 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          return 100;
+        }
+        return prev + 2; // Increment by 2% every 100ms (5 seconds total)
+      });
+    }, 100);
+    
+    return () => clearInterval(interval);
+  }, []);
+
+  // Outer ring rotation animation
+  const outerRingVariants = {
+    animate: {
+      rotate: 360,
+      transition: {
+        duration: 3,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    },
+  };
+
+  // Inner ring counter-rotation animation
+  const innerRingVariants = {
+    animate: {
+      rotate: -360,
+      transition: {
+        duration: 2,
+        ease: "linear",
+        repeat: Infinity,
+      },
+    },
+  };
+
+  // Pulsing center circle animation
+  const centerVariants = {
+    animate: {
+      scale: [1, 1.2, 1],
+      opacity: [0.7, 1, 0.7],
+      transition: {
+        duration: 1.5,
+        ease: "easeInOut",
+        repeat: Infinity,
+      },
+    },
+  };
+
+  // Floating particles animation
+  const particleVariants = {
+    animate: {
+      y: [-20, -40, -20],
+      x: [-10, 10, -10],
+      opacity: [0.3, 0.8, 0.3],
+      transition: {
+        duration: 2.5,
+        ease: "easeInOut",
+        repeat: Infinity,
+      },
+    },
+  };
+
+  // Progress text animation
+  const textVariants = {
+    animate: {
+      opacity: [0.5, 1, 0.5],
+      transition: {
+        duration: 1,
+        ease: "easeInOut",
+        repeat: Infinity,
+      },
+    },
+  };
+
+  return (
+    <div className="flex flex-col justify-center items-center w-full h-screen bg-gradient-to-br from-black via-gray-900 to-black relative overflow-hidden">
+      {/* Background animated gradient */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-r from-black/40 via-gray-900/20 to-black/40"
+        animate={{
+          backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+        }}
+        transition={{
+          duration: 4,
+          ease: "linear",
+          repeat: Infinity,
+        }}
+        style={{
+          backgroundSize: "200% 200%",
+        }}
+      />
+
+      {/* Floating particles */}
+      {[...Array(8)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-2 h-2 bg-white/30 rounded-full blur-sm"
+          style={{
+            left: `${20 + i * 10}%`,
+            top: `${30 + (i % 3) * 20}%`,
+          }}
+          variants={particleVariants}
+          animate="animate"
+          transition={{
+            delay: i * 0.3,
+          }}
+        />
+      ))}
+
+      {/* Main loader container */}
+      <div className="relative">
+        {/* Outer rotating ring */}
+        <motion.div
+          className="w-32 h-32 border-4 border-transparent rounded-full"
+          style={{ 
+            borderTopColor: '#164491',
+            borderRightColor: '#164491' + 'CC'
+          }}
+          variants={outerRingVariants}
+          animate="animate"
+        />
+
+        {/* Inner counter-rotating ring */}
+        <motion.div
+          className="absolute top-2 left-2 w-28 h-28 border-4 border-transparent rounded-full"
+          style={{ 
+            borderBottomColor: '#164491' + 'AA',
+            borderLeftColor: '#164491' + 'DD'
+          }}
+          variants={innerRingVariants}
+          animate="animate"
+        />
+
+        {/* Pulsing center circle */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-16 h-16 -mt-8 -ml-8 rounded-full shadow-lg"
+          style={{ 
+            background: `linear-gradient(135deg, #164491, #164491)`,
+            boxShadow: `0 0 15px rgb(22,68,145, 0.4)`
+          }}
+          variants={centerVariants}
+          animate="animate"
+        />
+
+        {/* Inner glow effect */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-12 h-12 -mt-6 -ml-6 rounded-full blur-sm"
+          style={{ backgroundColor: '#164491' + '30' }}
+          animate={{
+            scale: [1, 1.5, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 2,
+            ease: "easeInOut",
+            repeat: Infinity,
+          }}
+        />
+      </div>
+
+      {/* Progress bar */}
+      <div className="mt-8 w-64 h-2 bg-black/80 rounded-full overflow-hidden backdrop-blur-sm border border-gray-900/60">
+        <motion.div
+          className="h-full rounded-full shadow-lg"
+          style={{ 
+            background: `linear-gradient(90deg, #164491, #164491, #164491)`,
+            boxShadow: `0 0 15px rgba(60, 243, 134, 0.4)`
+          }}
+          initial={{ width: "0%" }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.1 }}
+        />
+      </div>
+
+      {/* Progress text */}
+      <motion.div
+        className="mt-4 text-center"
+        variants={textVariants}
+        animate="animate"
+      >
+        <div className="text-2xl font-bold mb-1" style={{ color: '#164491' }}>
+          {progress}%
+        </div>
+        <div className="text-sm font-medium tracking-wider" style={{ color: '#164491' + 'AA' }}>
+          {progress < 25 && "INITIALIZING..."}
+          {progress >= 25 && progress < 50 && "LOADING RESOURCES..."}
+          {progress >= 50 && progress < 75 && "PROCESSING DATA..."}
+          {progress >= 75 && progress < 100 && "FINALIZING..."}
+          {progress === 100 && "COMPLETE!"}
+        </div>
+      </motion.div>
+
+      {/* Decorative corner elements */}
+      <motion.div
+        className="absolute top-4 left-4 w-3 h-3 rounded-full"
+        style={{ backgroundColor: '#164491' }}
+        animate={{
+          opacity: [0.3, 1, 0.3],
+          scale: [1, 1.5, 1],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+          delay: 0.5,
+        }}
+      />
+      <motion.div
+        className="absolute top-4 right-4 w-3 h-3 rounded-full"
+        style={{ backgroundColor: '#164491' + 'CC' }}
+        animate={{
+          opacity: [0.3, 1, 0.3],
+          scale: [1, 1.5, 1],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+          delay: 1,
+        }}
+      />
+      <motion.div
+        className="absolute bottom-4 left-4 w-3 h-3 rounded-full"
+        style={{ backgroundColor: '#164491' + 'AA' }}
+        animate={{
+          opacity: [0.3, 1, 0.3],
+          scale: [1, 1.5, 1],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+          delay: 1.5,
+        }}
+      />
+      <motion.div
+        className="absolute bottom-4 right-4 w-3 h-3 rounded-full"
+        style={{ backgroundColor: '#164491' + 'DD' }}
+        animate={{
+          opacity: [0.3, 1, 0.3],
+          scale: [1, 1.5, 1],
+        }}
+        transition={{
+          duration: 2,
+          ease: "easeInOut",
+          repeat: Infinity,
+          delay: 2,
+        }}
+      />
+    </div>
+  );
+};
+
+
+
 const App: React.FC = () => {
-  // Initialize isAuthenticated to false. We don't know the state until checkAuth runs.
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Initial state is loading
   const location = useLocation();
   const [isInvalidRoute, setIsInvalidRoute] = useState(false);
-  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL; // Using import.meta.env
 
-  // Define valid routes (you can extend this as needed)
-  // This logic correctly determines if Navbar/Footer should be hidden
+  // Define valid routes to determine Navbar/Footer visibility and handle invalid routes
   const validRoutes = [
     '/signin', '/signup', '/', '/games', '/about', '/contact',
     '/settings', '/privacy', '/terms',
@@ -49,76 +315,80 @@ const App: React.FC = () => {
     '/fortnite', '/lol', '/pubg', '/rl', '/rivals'
   ];
 
-  // Check for invalid route on every pathname change
+  // Effect to check for invalid routes based on current pathname
   useEffect(() => {
-    // Check if the current path matches any known valid routes
     const isKnownRoute = validRoutes.some(route => {
-      // For dynamic routes (like /games/:id), you might need a more sophisticated check,
-      // but for exact matches, includes() is fine.
+      // Basic check for exact route matches
       return route === location.pathname;
     });
+    setIsInvalidRoute(!isKnownRoute); // Set true if route is not known
+  }, [location.pathname, validRoutes]); // Re-run if pathname or validRoutes change
 
-    setIsInvalidRoute(!isKnownRoute);
-  }, [location.pathname]);
-
+  // Determine if Navbar and Footer should be hidden
   const hideNavbarFooter = isInvalidRoute || location.pathname === '/signin' || location.pathname === '/signup';
 
+  // Main useEffect for authentication and loading state management
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // --- IMPORTANT CHANGE: Calling /api/auth/status endpoint for cleaner auth check ---
-        const response = await axios.get(`${API_BASE_URL}/api/auth/status`, {
-          withCredentials: true,
-        });
+    const checkAuthAndLoad = async () => {
+      // Create a promise for a minimum loading time of 5 seconds
+      const minLoadTimePromise = new Promise(resolve => setTimeout(resolve, 5000));
 
-        // Backend /auth/status returns { isAuthenticated: boolean }
-        // We now directly set the state based on this boolean.
-        if (response.data && typeof response.data.isAuthenticated === 'boolean') {
-          setIsAuthenticated(response.data.isAuthenticated);
+      try {
+        // Await both the minimum load time and the actual authentication status check
+        const [_, authResponse] = await Promise.all([
+          minLoadTimePromise, // Ensures loader is shown for at least this duration
+          axios.get(`${API_BASE_URL}/api/auth/status`, { withCredentials: true })
+        ]);
+
+        // Update authentication state based on the API response
+        if (authResponse.data && typeof authResponse.data.isAuthenticated === 'boolean') {
+          setIsAuthenticated(authResponse.data.isAuthenticated);
         } else {
-          // Fallback if the response structure is unexpected
-          console.warn("Unexpected response structure from /api/auth/status:", response.data);
+          console.warn("Unexpected response structure from /api/auth/status:", authResponse.data);
           setIsAuthenticated(false);
         }
       } catch (error) {
-        // Any network error or unexpected HTTP status will lead to false
+        // Log authentication check errors and set isAuthenticated to false
         console.error("Authentication check failed:", error);
         setIsAuthenticated(false);
       } finally {
+        // Always set loading to false after both promises have resolved
         setLoading(false);
       }
     };
-    checkAuth();
-  }, []); // Empty dependency array means this runs once on mount
 
-  // This useEffect is good for debugging, keep it.
+    checkAuthAndLoad(); // Execute the async function on component mount
+  }, [API_BASE_URL]); // Dependency array includes API_BASE_URL if it can change
+
+  // Effect for debugging authentication state changes
   useEffect(() => {
-    console.log('IsAuthenticated:', isAuthenticated); // Logs to console when isAuthenticated changes
-  }, [isAuthenticated]);
+    console.log('IsAuthenticated:', isAuthenticated); // Logs current authentication status
+  }, [isAuthenticated]); // Re-run when isAuthenticated state changes
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white">
-      {/* Loading Spinner */}
+      {/* Conditional rendering of the Loader or the main application content */}
       {loading ? (
         <div className="flex justify-center items-center h-screen">
-          <div className="animate-spin rounded-full h-24 w-24 border-t-4 border-blue-500 border-solid"></div>
+          <Loader /> {/* Display the custom Loader component */}
         </div>
       ) : (
         <>
-          {/* Navbar */}
+          {/* Navbar component, conditionally rendered */}
           {!hideNavbarFooter && (
             <Navbar isAuthenticated={isAuthenticated} setIsAuthenticated={setIsAuthenticated} />
           )}
 
           <main className="flex-grow">
+            {/* React Router Routes for navigation */}
             <Routes>
-              {/* Page Not Found */}
+              {/* Catch-all route for Page Not Found */}
               <Route
                 path="*"
                 element={<PageNotFound />}
               />
 
-              {/* Main Sections */}
+              {/* Main landing page route */}
               <Route
                 path="/"
                 element={
@@ -131,7 +401,7 @@ const App: React.FC = () => {
                 }
               />
 
-              {/* Protected Routes using conditional rendering with Navigate */}
+              {/* Protected Routes: accessible only if isAuthenticated is true, otherwise redirects to signin */}
               <Route
                 path="/games"
                 element={isAuthenticated ? <GamesSection /> : <Navigate to="/signin" replace />}
@@ -157,11 +427,11 @@ const App: React.FC = () => {
                 element={isAuthenticated ? <TermsAndConditions /> : <Navigate to="/signin" replace />}
               />
 
-              {/* Auth Routes - No protection needed here */}
+              {/* Authentication Routes: accessible regardless of authentication status */}
               <Route path="/signin" element={<SignIn setIsAuthenticated={setIsAuthenticated} />} />
               <Route path="/signup" element={<SignUp setIsAuthenticated={setIsAuthenticated} />} />
 
-              {/* Game-Specific Routes - Also protected */}
+              {/* Game-Specific Routes: also protected */}
               <Route
                 path="/valorant"
                 element={isAuthenticated ? <Valorant /> : <Navigate to="/signin" replace />}
@@ -209,10 +479,10 @@ const App: React.FC = () => {
             </Routes>
           </main>
 
-          {/* Footer */}
+          {/* Footer component, conditionally rendered */}
           {!hideNavbarFooter && <Footer />}
 
-          {/* Analytics */}
+          {/* Vercel Analytics component */}
           <Analytics />
         </>
       )}
