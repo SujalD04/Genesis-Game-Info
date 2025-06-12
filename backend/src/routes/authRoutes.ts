@@ -50,7 +50,11 @@ router.post(
       res.cookie("authToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict", // Keeping user's original preference. Consider "lax" if issues persist with cross-origin.
+        // --- START CHANGE ---
+        // Changed sameSite to "none" for cross-domain cookie sending.
+        // Requires secure: true, which is handled by process.env.NODE_ENV === "production"
+        sameSite: "none",
+        // --- END CHANGE ---
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
@@ -79,7 +83,10 @@ router.post("/signin", async (req: Request, res: Response) => {
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      // --- START CHANGE ---
+      // Changed sameSite to "none" for cross-domain cookie sending.
+      sameSite: "none",
+      // --- END CHANGE ---
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -95,7 +102,10 @@ router.post("/logout", (req: Request, res: Response) => {
   res.clearCookie("authToken", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax", // Match the setting from signin
+    // --- START CHANGE ---
+    // Changed sameSite to "none" for cross-domain cookie clearing.
+    sameSite: "none",
+    // --- END CHANGE ---
   });
   res.json({ msg: "Logged out" });
 });
@@ -106,7 +116,6 @@ router.get("/protected", verifyToken, (req: Request, res: Response) => {
   res.json({ msg: "You are authenticated!", user });
 });
 
-// --- START FIX for 404 ---
 // Changed path from "/auth/status" to just "/status"
 // Because app.use('/api/auth', authRoutes) already adds '/api/auth/'
 router.get("/status", (req: Request, res: Response) => {
@@ -127,6 +136,5 @@ router.get("/status", (req: Request, res: Response) => {
     res.json({ isAuthenticated: false });
   }
 });
-// --- END FIX ---
 
 export default router;
