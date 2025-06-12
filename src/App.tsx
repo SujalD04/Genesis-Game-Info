@@ -49,7 +49,7 @@ const Loader = () => {
           clearInterval(interval);
           return 100;
         }
-        return prev + 2; // Increment by 2% every 100ms (5 seconds total)
+        return prev + 4; // Increment by 2% every 100ms (5 seconds total)
       });
     }, 100);
     
