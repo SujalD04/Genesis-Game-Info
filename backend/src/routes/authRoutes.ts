@@ -79,7 +79,8 @@ router.post("/signin", async (req: Request, res: Response) => {
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      // Changed from "strict" to "lax"
+      sameSite: "lax", // This is often sufficient for SPAs on different subdomains
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -92,7 +93,11 @@ router.post("/signin", async (req: Request, res: Response) => {
 
 // Logout Route
 router.post("/logout", (req: Request, res: Response) => {
-  res.clearCookie("authToken", { httpOnly: true, secure: true, sameSite: "strict" });
+  res.clearCookie("authToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax", // Match the setting from above
+  });
   res.json({ msg: "Logged out" });
 });
 
