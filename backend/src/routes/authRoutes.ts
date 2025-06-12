@@ -1,10 +1,10 @@
 // backend/src/routes/authRoutes.ts
-import express, { Request, Response } from "express";
+import express, { Request, Response } from "express"; // Import Request and Response types
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 import { body, validationResult } from "express-validator";
-import verifyToken from "../middlewares/authMiddleware";
+import verifyToken from "../middlewares/authMiddleware"; // Assuming this is your authMiddleware
 
 const router = express.Router();
 
@@ -45,25 +45,18 @@ router.post(
       await newUser.save();
 
       const payload = { userId: newUser.id };
-      // --- START CHANGE ---
-      // Changed JWT expiration to 7 days to match cookie maxAge
       const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "7d" });
-      // --- END CHANGE ---
 
-      // Set httpOnly Cookie
       res.cookie("authToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        // Note: sameSite: "strict" can be problematic for cross-origin requests.
-        // It's recommended to use "lax" or "none" with secure: true if your
-        // frontend and backend are on different domains/subdomains.
-        sameSite: "strict", // Keeping user's original preference, but "lax" is often safer.
+        sameSite: "strict", // Keeping user's original preference. Consider "lax" if issues persist with cross-origin.
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
       res.json({ msg: "Signup successful" });
     } catch (err) {
-      console.error(err); // Log the error for server-side debugging
+      console.error("Signup error:", err); // More specific logging
       res.status(500).json({ msg: "Server error" });
     }
   }
@@ -81,23 +74,18 @@ router.post("/signin", async (req: Request, res: Response) => {
     if (!isMatch) return res.status(400).json({ msg: "Email or Password might be wrong." });
 
     const payload = { userId: user.id };
-    // --- START CHANGE ---
-    // Changed JWT expiration to 7 days to match cookie maxAge
     const token = jwt.sign(payload, process.env.JWT_SECRET || "yourSecretKey", { expiresIn: "7d" });
-    // --- END CHANGE ---
 
-    // Fix: Store token in httpOnly Cookie instead of returning it in JSON
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      // Changed from "strict" to "lax" for better cross-site compatibility
-      sameSite: "lax", // This is often sufficient for SPAs on different subdomains
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
     res.json({ msg: "Login successful" });
   } catch (err) {
-    console.error(err);
+    console.error("Signin error:", err); // More specific logging
     res.status(500).json({ msg: "Server error" });
   }
 });
@@ -112,26 +100,33 @@ router.post("/logout", (req: Request, res: Response) => {
   res.json({ msg: "Logged out" });
 });
 
-// Protected Route
+// Protected Route (used by the frontend for initial authentication check)
 router.get("/protected", verifyToken, (req: Request, res: Response) => {
   const user = (req as AuthenticatedRequest).user; // Type assertion
   res.json({ msg: "You are authenticated!", user });
 });
 
-router.get("/auth/status", (req: Request, res: Response) => {
+// --- START FIX for 404 ---
+// Changed path from "/auth/status" to just "/status"
+// Because app.use('/api/auth', authRoutes) already adds '/api/auth/'
+router.get("/status", (req: Request, res: Response) => {
+  console.log("Received GET /api/auth/status request"); // Added for debugging Render logs
   const token = req.cookies.authToken; // Get the cookie
 
   if (!token) {
+    console.log("No auth token found in cookie."); // Debugging
     return res.json({ isAuthenticated: false });
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "yourSecretKey");
+    console.log("Auth token verified successfully."); // Debugging
     res.json({ isAuthenticated: true, user: decoded });
   } catch (err) {
-    console.error("Auth status check failed:", err); // Log the error for server-side debugging
+    console.error("Auth status verification failed:", err); // More specific logging
     res.json({ isAuthenticated: false });
   }
 });
+// --- END FIX ---
 
 export default router;
